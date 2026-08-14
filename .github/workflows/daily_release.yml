@@ -1,0 +1,74 @@
+name: Daily Incremental Release
+
+on:
+  schedule:
+    # Runs automatically every day at 08:00 AM IST (02:30 UTC)
+    - cron: '30 2 * * *'
+  workflow_dispatch: # Enables one-click manual trigger from GitHub UI anytime
+
+jobs:
+  progressive-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout Target Repository (BookmarkVault)
+      - name: Checkout Target Repository (BookmarkVault)
+        uses: actions/checkout@v4
+        with:
+          repository: dk5488/BookmarkVault
+          token: ${{ secrets.GH_PAT_TOKEN }}
+          fetch-depth: 0
+          path: target_repo
+
+      # 2. Checkout Private Uploader Engine
+      - name: Checkout Progressive Uploader Engine
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT_TOKEN }}
+          path: engine
+
+      # 3. Set up Python 3.11
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 4. Install Dependencies
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r engine/requirements.txt
+
+      # 5. Configure Git Identity as YOU (Links commits to your GitHub avatar & profile graph)
+      - name: Configure Git Identity (Personal Profile)
+        run: |
+          cd target_repo
+          git config user.name "${{ secrets.YOUR_GITHUB_NAME }}"
+          git config user.email "${{ secrets.YOUR_GITHUB_EMAIL }}"
+
+      # 6. Restore Publisher State
+      - name: Restore Publisher State
+        run: |
+          if [ -d "engine/.incremental-publisher" ]; then
+            cp -r engine/.incremental-publisher target_repo/
+          fi
+
+      # 7. Execute Daily Release
+      - name: Execute Daily Release
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          cd engine
+          python -m src.cli.main release --dir ../target_repo
+
+      # 8. Persist Publisher State back to Private Engine Repo
+      - name: Persist State to Private Engine Repo
+        run: |
+          cp -r target_repo/.incremental-publisher engine/
+          cd engine
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .incremental-publisher/
+          git diff --staged --quiet || (git commit -m "chore: update publisher state" && git push)
