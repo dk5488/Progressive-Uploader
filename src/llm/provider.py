@@ -256,8 +256,15 @@ class GroqProvider(LLMProvider):
     CHARS_PER_TOKEN = 4
     MAX_INPUT_TOKENS = 10000  # Leave headroom below 12K TPM limit
 
-    # Fallback model chain — try smaller models if the primary is too large
-    FALLBACK_MODELS = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
+    # Fallback model chain — try smaller or alternative models if the primary fails/is unavailable
+    FALLBACK_MODELS = [
+        "llama-3.3-70b-versatile",
+        "llama-3.1-8b-instant",
+        "llama3-70b-8192",
+        "llama3-8b-8192",
+        "gemma2-9b-it",
+        "mixtral-8x7b-32768"
+    ]
 
     def __init__(self, api_key: Optional[str] = None):
         try:
@@ -283,7 +290,7 @@ class GroqProvider(LLMProvider):
             messages = [{"role": "user", "content": prompt}]
             
             # Use smaller max_tokens for smaller models
-            max_tokens = 4096 if "70b" in model else 2048
+            max_tokens = 4096 if ("70b" in model or "mixtral" in model) else 2048
             
             kwargs = {
                 "model": model,
@@ -304,6 +311,11 @@ class GroqProvider(LLMProvider):
                 except Exception as e:
                     last_error = e
                     error_str = str(e).lower()
+                    
+                    # Handle 404 / Model Not Found or Access errors — skip immediately to next model
+                    if "404" in str(e) or "does not exist" in error_str or "model_not_found" in error_str:
+                        print(f"  Model {model} not found or inaccessible. Trying next model...")
+                        break  # Move to next model
                     
                     # Handle 413 Request Too Large — skip to smaller model
                     if "413" in str(e) or "request too large" in error_str:
