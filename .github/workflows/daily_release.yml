@@ -10,6 +10,9 @@ jobs:
   progressive-release:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       # 1. Checkout Target Repository (BookmarkVault)
       - name: Checkout Target Repository (BookmarkVault)
@@ -20,12 +23,10 @@ jobs:
           fetch-depth: 0
           path: target_repo
 
-           # 2. Checkout Private Uploader Engine
+      # 2. Checkout Private Uploader Engine
       - name: Checkout Progressive Uploader Engine
         uses: actions/checkout@v4
         with:
-          repository: dk5488/Progressive-Uploader
-          token: ${{ secrets.GH_PAT_TOKEN }}
           path: engine
 
 
