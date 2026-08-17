@@ -8,10 +8,9 @@ class TelegramNotifier:
     """Sends release status summary notifications to Telegram."""
     
     def __init__(self, token: Optional[str] = None, chat_id: Optional[str] = None):
-        from src.utils.env_loader import load_env
         load_env()
-        self.token = token or os.environ.get("TELEGRAM_BOT_TOKEN", self.DEFAULT_TOKEN)
-        self.chat_id = chat_id or os.environ.get("TELEGRAM_CHAT_ID", self.DEFAULT_CHAT_ID)
+        self.token = token or os.environ.get("TELEGRAM_BOT_TOKEN")
+        self.chat_id = chat_id or os.environ.get("TELEGRAM_CHAT_ID")
 
     def send_message(self, message: str) -> bool:
         if not self.token or not self.chat_id:
