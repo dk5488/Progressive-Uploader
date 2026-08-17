@@ -49,11 +49,14 @@ jobs:
           git config user.name "${{ secrets.YOUR_GITHUB_NAME }}"
           git config user.email "${{ secrets.YOUR_GITHUB_EMAIL }}"
 
-      # 6. Restore Publisher State
-      - name: Restore Publisher State
+      # 6. Restore Publisher State & Overlay Source Code
+      - name: Restore Publisher State & Overlay Source Code
         run: |
           if [ -d "engine/.incremental-publisher" ]; then
             cp -r engine/.incremental-publisher target_repo/
+          fi
+          if [ -d "engine/source" ]; then
+            cp -r engine/source/. target_repo/
           fi
 
       # 7. Execute Daily Release
