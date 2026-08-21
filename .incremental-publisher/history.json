@@ -27,6 +27,11 @@
     {
       "release_id": "7",
       "timestamp": "2026-08-21T03:26:57.719812"
+    },
+    {
+      "release_id": "8",
+      "status": "PUBLISHED",
+      "timestamp": "2026-08-21T09:32:41.081166"
     }
   ]
 }
