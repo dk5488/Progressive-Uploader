@@ -1,4 +1,5 @@
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional, Set
+from collections import defaultdict
 from src.llm.provider import LLMProvider
 from src.analyzer.repository_analyzer import RepositoryAnalyzer
 from src.state.state_manager import StateManager
@@ -46,8 +47,11 @@ class RoadmapGenerator:
         print("Generating release roadmap...")
         roadmap = self.llm.generate_roadmap(features_data, file_tree=file_list)
         
-        # Validate file coverage and patch any gaps
+        # Validate file coverage, deduplicate, and patch any gaps
         roadmap = self._ensure_full_coverage(roadmap)
+        
+        # Validate that every file belongs to exactly one release with zero duplicates
+        self.validate_roadmap(roadmap, all_files=set(self.analyzer.get_all_files()))
         
         # Save to state
         self.state.save_roadmap({"releases": roadmap})
@@ -165,25 +169,30 @@ class RoadmapGenerator:
         return list(by_name.values())
 
     def _ensure_full_coverage(self, roadmap: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Validates every repo file appears in at least one release. 
+        """Validates every repo file appears in exactly one release.
+        Deduplicates files so each file belongs only to its first assigned release.
         Groups uncovered files into catch-all releases by directory.
         """
         all_files = set(self.analyzer.get_all_files())
         
-        # Collect all files referenced in the roadmap (normalize paths)
-        covered_files = set()
+        # Deduplicate files across roadmap releases (assign to first release seen)
+        seen_files = set()
         for release in roadmap:
+            unique_files = []
             for f in release.get("files_involved", []):
                 normalized = f.replace("\\", "/")
-                covered_files.add(normalized)
+                if normalized not in seen_files:
+                    seen_files.add(normalized)
+                    unique_files.append(normalized)
+            release["files_involved"] = unique_files
         
-        uncovered = all_files - covered_files
+        uncovered = all_files - seen_files
         
         if not uncovered:
             print(f"File coverage: {len(all_files)}/{len(all_files)} files covered.")
             return roadmap
         
-        print(f"File coverage: {len(covered_files)}/{len(all_files)} files covered. Adding {len(uncovered)} missing files...")
+        print(f"File coverage: {len(seen_files)}/{len(all_files)} files covered. Adding {len(uncovered)} missing files...")
         
         # Group uncovered files by their top-level directory (or root)
         groups: Dict[str, List[str]] = {}
@@ -229,3 +238,31 @@ class RoadmapGenerator:
                 print(f"  Added catch-all release {max_id}: {len(chunk)} {group_label.lower()} files")
         
         return roadmap
+
+    def validate_roadmap(self, roadmap: List[Dict[str, Any]], all_files: Optional[Set[str]] = None) -> bool:
+        """Validates roadmap integrity:
+        - Every file must belong to exactly one release.
+        - Rejects duplicate file assignments across releases.
+        - Optionally verifies that all repository files are covered.
+        """
+        file_to_releases = defaultdict(list)
+        
+        for release in roadmap:
+            rel_id = release.get("release_id", "unknown")
+            for f in release.get("files_involved", []):
+                normalized = f.replace("\\", "/")
+                file_to_releases[normalized].append(str(rel_id))
+                
+        duplicates = {f: rids for f, rids in file_to_releases.items() if len(rids) > 1}
+        if duplicates:
+            duplicate_details = "; ".join([f"'{f}' in releases {rids}" for f, rids in duplicates.items()])
+            raise ValueError(f"Roadmap validation failed: duplicate file assignments detected: {duplicate_details}")
+            
+        if all_files is not None:
+            normalized_all = {f.replace("\\", "/") for f in all_files}
+            covered = set(file_to_releases.keys())
+            missing = normalized_all - covered
+            if missing:
+                raise ValueError(f"Roadmap validation failed: {len(missing)} files missing from roadmap: {sorted(list(missing))[:10]}")
+                
+        return True

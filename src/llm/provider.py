@@ -178,7 +178,7 @@ File samples:
     def generate_roadmap(self, features: Dict[str, Any], file_tree: str = "") -> List[Dict[str, Any]]:
         file_tree_section = ""
         if file_tree:
-            file_tree_section = f"\nComplete File Tree (every file here MUST appear in at least one release's files_involved):\n{file_tree}\n"
+            file_tree_section = f"\nComplete File Tree (every file here MUST appear in exactly one release's files_involved):\n{file_tree}\n"
         
         prompt = f"""
 Given these features and dependencies, create an ordered list of logically coherent releases.
@@ -186,7 +186,8 @@ Remember:
 - Do not release a feature until its dependencies are released.
 - Break down L or XL features into smaller releases (XS, S, M).
 - Do not make a release too large.
-- CRITICAL: EVERY file in the project MUST be included in at least one release's "files_involved".
+- CRITICAL: EVERY file in the project MUST belong to EXACTLY ONE release's "files_involved".
+- Do NOT assign the same file to multiple releases. Duplicate file assignments across releases are strictly prohibited.
 - Do NOT use glob patterns like "*". List each file individually by its relative path.
 - Include a release for project setup/config files (README, LICENSE, .gitignore, Dockerfiles, composer.json, package.json, etc.) — these should be among the earliest releases.
 {file_tree_section}
@@ -417,7 +418,7 @@ File samples:
     def generate_roadmap(self, features: Dict[str, Any], file_tree: str = "") -> List[Dict[str, Any]]:
         file_tree_section = ""
         if file_tree:
-            file_tree_section = f"\nComplete File Tree (every file here MUST appear in at least one release's files_involved):\n{file_tree}\n"
+            file_tree_section = f"\nComplete File Tree (every file here MUST appear in exactly one release's files_involved):\n{file_tree}\n"
         
         prompt = f"""
 Given these features and dependencies, create an ordered list of logically coherent releases.
@@ -425,7 +426,8 @@ Remember:
 - Do not release a feature until its dependencies are released.
 - Break down L or XL features into smaller releases (XS, S, M).
 - Do not make a release too large.
-- CRITICAL: EVERY file in the project MUST be included in at least one release's "files_involved".
+- CRITICAL: EVERY file in the project MUST belong to EXACTLY ONE release's "files_involved".
+- Do NOT assign the same file to multiple releases. Duplicate file assignments across releases are strictly prohibited.
 - Do NOT use glob patterns. List each file individually by its relative path.
 - Include a release for project setup/config files early on.
 
@@ -446,7 +448,8 @@ Remember:
 - Do not release a feature until its dependencies are released.
 - Break down L or XL features into smaller releases (XS, S, M).
 - Do not make a release too large.
-- CRITICAL: EVERY file listed in the features MUST be included in at least one release's "files_involved".
+- CRITICAL: EVERY file listed in the features MUST belong to EXACTLY ONE release's "files_involved".
+- Do NOT assign the same file to multiple releases. Duplicate file assignments across releases are strictly prohibited.
 - Do NOT use glob patterns. List each file individually.
 - Include a release for project setup/config files early on.
 

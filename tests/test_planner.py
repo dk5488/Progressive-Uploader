@@ -170,3 +170,52 @@ def test_replanner_completed_skips():
     replanner.replan_if_needed()
     
     llm.analyze_repository.assert_not_called()
+
+def test_validate_roadmap_rejects_duplicates():
+    gen = RoadmapGenerator(Mock(), Mock(), Mock())
+    roadmap = [
+        {"release_id": 1, "feature": "A", "files_involved": ["file1.py", "file2.py"]},
+        {"release_id": 2, "feature": "B", "files_involved": ["file2.py", "file3.py"]}
+    ]
+    with pytest.raises(ValueError, match="duplicate file assignments detected"):
+        gen.validate_roadmap(roadmap)
+
+def test_validate_roadmap_success():
+    gen = RoadmapGenerator(Mock(), Mock(), Mock())
+    roadmap = [
+        {"release_id": 1, "feature": "A", "files_involved": ["file1.py", "file2.py"]},
+        {"release_id": 2, "feature": "B", "files_involved": ["file3.py"]}
+    ]
+    assert gen.validate_roadmap(roadmap, all_files={"file1.py", "file2.py", "file3.py"}) is True
+
+def test_roadmap_generator_deduplicates_llm_output():
+    """Test that if LLM returns duplicate files across releases, generator deduplicates so each file belongs to exactly one release."""
+    llm = Mock()
+    analyzer = Mock()
+    state = Mock()
+    
+    analyzer.get_file_tree.return_value = "tree"
+    analyzer.get_file_contents.return_value = {}
+    analyzer.count_files.return_value = 2
+    analyzer.get_file_list_string.return_value = "fileA.py\nfileB.py"
+    analyzer.get_all_files.return_value = ["fileA.py", "fileB.py"]
+    
+    llm.analyze_repository.return_value = {"architecture_type": "MVC"}
+    llm.identify_features.return_value = {"features": [{"name": "A"}]}
+    # LLM mistakenly puts fileA.py in both releases
+    llm.generate_roadmap.return_value = [
+        {"release_id": 1, "feature": "A", "files_involved": ["fileA.py", "fileB.py"]},
+        {"release_id": 2, "feature": "B", "files_involved": ["fileA.py"]}
+    ]
+    
+    state.load_state.return_value = {}
+    
+    gen = RoadmapGenerator(llm, analyzer, state)
+    roadmap = gen.generate()
+    
+    # Should validate cleanly without throwing duplicate error
+    assert gen.validate_roadmap(roadmap) is True
+    # fileA.py should only be in release 1
+    assert roadmap[0]["files_involved"] == ["fileA.py", "fileB.py"]
+    assert roadmap[1]["files_involved"] == []
+

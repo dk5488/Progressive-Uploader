@@ -134,12 +134,7 @@
       "dependencies": [
         "Project Setup & Configuration"
       ],
-      "files_involved": [
-        "frontend/tsconfig.app.json",
-        "frontend/tsconfig.json",
-        "frontend/tsconfig.node.json",
-        "frontend/vite.config.ts"
-      ],
+      "files_involved": [],
       "validation_requirements": [
         "Verify frontend build"
       ]
@@ -238,8 +233,7 @@
         "Project Setup & Configuration"
       ],
       "files_involved": [
-        "framework/Router.php",
-        "framework/Application.php"
+        "framework/Router.php"
       ],
       "validation_requirements": [
         "Verify routing"

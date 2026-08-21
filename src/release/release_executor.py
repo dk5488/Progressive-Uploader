@@ -23,6 +23,13 @@ class ReleaseExecutor:
         self.notifier = notifier or TelegramNotifier()
         self.logs_dir = state.state_dir / "logs"
 
+    def _send_notification(self, message: str, context: str = "") -> bool:
+        """Sends Telegram notification, checking return status and logging failures explicitly."""
+        sent = self.notifier.send_message(message)
+        if not sent:
+            print(f"  Warning: Telegram notification failed to deliver for {context or 'release event'}.")
+        return sent
+
     def _log_failure(self, release: Dict[str, Any], reason: str, stage: str):
         """Persist failure details to logs directory for post-mortem diagnosis."""
         try:
@@ -79,7 +86,7 @@ class ReleaseExecutor:
             else:
                 print(f"Crash recovery: Push failed. {out}")
                 self._log_failure(release, f"Crash recovery push failed: {out}", "crash_recovery_push")
-                return True
+                return False
                 
         return False
 
@@ -97,7 +104,7 @@ class ReleaseExecutor:
         if not self.validator.validate():
             reason = "Tests/Validation failed."
             self._log_failure(release, reason, "validation")
-            self.notifier.send_message(f"⚠️ *Release {rel_id} Validation Failed*: {reason}")
+            self._send_notification(f"⚠️ *Release {rel_id} Validation Failed*: {reason}", context=f"Release {rel_id} validation")
             return False, reason
             
         # 2. Diff and Safety Check (performed upfront for the whole release)
@@ -107,7 +114,7 @@ class ReleaseExecutor:
         if not is_safe:
             msg = f"Safety check failed: {reason}"
             self._log_failure(release, msg, "safety_check")
-            self.notifier.send_message(f"🚨 *Release {rel_id} Safety Rejection*: {reason}")
+            self._send_notification(f"🚨 *Release {rel_id} Safety Rejection*: {reason}", context=f"Release {rel_id} safety rejection")
             return False, msg
             
         print("Safety check passed. No unrelated changes.")
@@ -138,12 +145,12 @@ class ReleaseExecutor:
                 if not success:
                     reason = f"Push failed at file {idx}/{total_files} ({file_clean}): {out}"
                     self._log_failure(release, reason, "per_file_push")
-                    # Single error notification to Telegram
-                    self.notifier.send_message(
+                    self._send_notification(
                         f"❌ *Release {rel_id} Failed!*\n"
                         f"*Feature:* {feature}\n"
                         f"*Failed File:* `{file_clean}` ({idx}/{total_files})\n"
-                        f"*Error Output:* `{out[:200]}`"
+                        f"*Error Output:* `{out[:200]}`",
+                        context=f"Release {rel_id} push failure"
                     )
                     return False, reason
                     
@@ -152,10 +159,39 @@ class ReleaseExecutor:
             else:
                 print(f"  [{idx}/{total_files}] File {file_clean} already clean/committed. Skipping.")
 
-        # 4. Record Success
+        # 4. Check if any files were actually pushed
+        if not pushed_files:
+            if total_files == 0:
+                reason = f"Release {rel_id} has no files assigned (already published in earlier releases)."
+            else:
+                reason = f"All {total_files} candidate file(s) in Release {rel_id} are already committed/published."
+            
+            skip_msg_cli = f"⏭️ Release {rel_id} ({feature}) SKIPPED: {reason}"
+            print(f"  {skip_msg_cli}")
+            
+            # Record skip in state and history so the pipeline advances to next release
+            self._record_skip(release, reason=reason)
+            
+            # Send Telegram skip notification
+            skip_msg_tg = (
+                f"⏭️ *Release {rel_id} Skipped*\n"
+                f"*Feature:* {feature}\n"
+                f"*Description:* {release.get('description')}\n"
+                f"*Reason:* {reason}\n"
+                f"*Status:* Marked as SKIPPED, advanced to next release."
+            )
+            self._send_notification(skip_msg_tg, context=f"Release {rel_id} skip")
+            
+            # Dynamic Replanning
+            if not dry_run:
+                self.replanner.replan_if_needed()
+                
+            return True, skip_msg_cli
+
+        # 5. Record Success
         self._record_success(release)
         
-        # 5. Build clean single summary Telegram notification
+        # 6. Build clean single summary Telegram notification
         project_state = self.state.load_state()
         completed = project_state.get('completed_releases', 0)
         total = project_state.get('total_releases', 0)
@@ -163,8 +199,6 @@ class ReleaseExecutor:
         files_summary = "\n".join([f"• `{f}`" for f in pushed_files[:15]])
         if len(pushed_files) > 15:
             files_summary += f"\n... and {len(pushed_files) - 15} more files"
-        if not files_summary:
-            files_summary = "• All candidate files already committed."
             
         summary_msg = (
             f"🎉 *Release {rel_id} Published Successfully!*\n"
@@ -174,9 +208,9 @@ class ReleaseExecutor:
             f"*Pushed Files ({len(pushed_files)}):*\n"
             f"{files_summary}"
         )
-        self.notifier.send_message(summary_msg)
+        self._send_notification(summary_msg, context=f"Release {rel_id} success summary")
         
-        # 6. Dynamic Replanning
+        # 7. Dynamic Replanning
         if not dry_run:
             self.replanner.replan_if_needed()
             
@@ -201,9 +235,36 @@ class ReleaseExecutor:
         releases_hist = history.get('releases', [])
         releases_hist.append({
             "release_id": release.get("release_id"),
+            "status": "PUBLISHED",
             "timestamp": project_state['last_execution']
         })
         history['releases'] = releases_hist
         self.state.save_history(history)
 
+    def _record_skip(self, release: Dict[str, Any], reason: str = ""):
+        """Advance state index when a release is skipped because all files are already published."""
+        project_state = self.state.load_state()
+        idx = release.get('_index', 0)
+        
+        project_state['last_successful_release_index'] = idx
+        project_state['completed_releases'] = idx + 1
+        project_state['last_execution'] = datetime.datetime.now().isoformat()
+        
+        roadmap = self.state.load_roadmap()
+        if project_state['completed_releases'] >= len(roadmap.get('releases', [])):
+            project_state['status'] = "COMPLETED"
+            
+        self.state.save_state(project_state)
+        
+        # Save to history with SKIPPED status
+        history = self.state.load_history()
+        releases_hist = history.get('releases', [])
+        releases_hist.append({
+            "release_id": release.get("release_id"),
+            "status": "SKIPPED",
+            "reason": reason,
+            "timestamp": project_state['last_execution']
+        })
+        history['releases'] = releases_hist
+        self.state.save_history(history)
 
