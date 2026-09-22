@@ -1,7 +1,7 @@
 {
-  "language": "PHP",
-  "framework": "Custom",
-  "build_system": "Composer",
-  "architecture_type": "MVC",
-  "description": "The project is built using PHP as the primary language, with a custom framework, and utilizes Composer as the build system. It follows the Model-View-Controller (MVC) architecture pattern."
+  "language": "JavaScript",
+  "framework": "React",
+  "build_system": "Vite",
+  "architecture_type": "SPA",
+  "description": "A React single-page application built with Vite, using JavaScript and organized into components, sections, and assets, following a component\u2011based SPA architecture."
 }

@@ -1,761 +1,309 @@
 {
   "releases": [
     {
-      "release_id": "1",
+      "release_id": "R1",
       "feature": "Project Setup & Configuration",
-      "description": "Config and DevOps files for project setup and configuration",
-      "complexity": "M",
+      "description": "Root configuration, build scripts, package manifests, documentation and basic HTML entry point.",
+      "complexity": "XS",
       "dependencies": [],
       "files_involved": [
         ".gitignore",
-        "app-info.json",
-        "composer.json",
-        "composer.lock",
-        "Config.php",
-        "docker-compose.dev.yml",
-        "docker-compose.yml",
-        "Dockerfile.build",
-        "Dockerfile.dev",
-        "init.php",
-        "LICENSE",
+        "eslint.config.js",
+        "index.html",
+        "package-lock.json",
+        "package.json",
         "README.md",
-        "apache-conf/faved.conf",
-        "certbot-conf/.gitignore",
-        "frontend/.gitignore",
-        "frontend/.prettierrc",
-        "frontend/components.json",
-        "frontend/eslint.config.js",
-        "frontend/package.json",
-        "frontend/package-lock.json",
-        "frontend/tsconfig.app.json",
-        "frontend/tsconfig.json",
-        "frontend/tsconfig.node.json",
-        "frontend/vite.config.ts",
-        "framework/Application.php",
-        "framework/bootstrap.php",
-        "framework/helper-functions.php",
-        "framework/ServiceContainer.php",
-        ".github/ISSUE_TEMPLATE/bug_report.md",
-        ".github/workflows/docker-publish.yml"
+        "vite.config.js"
       ],
       "validation_requirements": [
-        "Verify project structure",
-        "Verify dependencies"
+        "Run linting",
+        "Verify build scripts execute"
       ]
     },
     {
-      "release_id": "2",
-      "feature": "Public Assets",
-      "description": "Publicly accessible assets, such as images and manifest files",
+      "release_id": "R2",
+      "feature": "Global Styles & Typography",
+      "description": "Tailwind CSS import, custom font-face, CSS variables and global typography definitions.",
+      "complexity": "S",
+      "dependencies": [
+        "Project Setup & Configuration"
+      ],
+      "files_involved": [
+        "src/index.css",
+        "public/fonts/ProximaNova-Regular.otf"
+      ],
+      "validation_requirements": [
+        "Check CSS compiles",
+        "Verify font loads"
+      ]
+    },
+    {
+      "release_id": "R3",
+      "feature": "Constants & Data",
+      "description": "Centralized static data such as flavor lists, nutrient lists and other configuration objects.",
       "complexity": "XS",
       "dependencies": [],
       "files_involved": [
-        "frontend/public/logo.png",
-        "frontend/public/manifest.webmanifest",
-        "frontend/public/favicons/android-chrome-96x96.png",
-        "frontend/public/favicons/apple-touch-icon.png",
-        "frontend/public/favicons/favicon-16x16.png",
-        "frontend/public/favicons/favicon-32x32.png",
-        "frontend/public/favicons/icon-192x192.png",
-        "frontend/public/favicons/icon-512x512.png",
-        "frontend/public/favicons/mstile-150x150.png"
+        "src/constants/index.js"
       ],
       "validation_requirements": [
-        "Verify assets are accessible"
+        "Run unit tests on data structures"
       ]
     },
     {
-      "release_id": "3",
-      "feature": "Database Setup",
-      "description": "Setting up the database for the application",
-      "complexity": "S",
+      "release_id": "R4",
+      "feature": "Product Media Assets",
+      "description": "All static image, video and icon assets used throughout the site.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "public/favicon.ico",
+        "public/vite.svg",
+        "public/images/arrow.svg",
+        "public/images/big-img.png",
+        "public/images/black-bg.svg",
+        "public/images/black-drink.webp",
+        "public/images/black-elements.webp",
+        "public/images/blue-bg.svg",
+        "public/images/blue-drink.webp",
+        "public/images/blue-elements.webp",
+        "public/images/brown-bg.svg",
+        "public/images/brown-drink.webp",
+        "public/images/brown-elements.webp",
+        "public/images/circle-text.svg",
+        "public/images/Final.png",
+        "public/images/footer-dip.png",
+        "public/images/footer-drink.png",
+        "public/images/hero-bg.png",
+        "public/images/hero-img.png",
+        "public/images/insta.svg",
+        "public/images/logo.png",
+        "public/images/nav-logo.svg",
+        "public/images/orange-bg.svg",
+        "public/images/orange-drink.webp",
+        "public/images/orange-elements.webp",
+        "public/images/p1.png",
+        "public/images/p2.png",
+        "public/images/p3.png",
+        "public/images/p4.png",
+        "public/images/p5.png",
+        "public/images/p6.png",
+        "public/images/p7.png",
+        "public/images/play.svg",
+        "public/images/red-bg.svg",
+        "public/images/red-drink.webp",
+        "public/images/red-elements.webp",
+        "public/images/slider-dip.png",
+        "public/images/static-img.png",
+        "public/images/tiktok.svg",
+        "public/images/video-img.webp",
+        "public/images/white-bg.svg",
+        "public/images/white-drink.webp",
+        "public/images/white-elements.webp",
+        "public/images/yt.svg",
+        "public/videos/f1.mp4",
+        "public/videos/f2.mp4",
+        "public/videos/f3.mp4",
+        "public/videos/f4.mp4",
+        "public/videos/f5.mp4",
+        "public/videos/f6.mp4",
+        "public/videos/f7.mp4",
+        "public/videos/hero-bg.mp4",
+        "public/videos/pin-video.mp4",
+        "public/videos/splash.mp4",
+        "src/assets/react.svg"
+      ],
+      "validation_requirements": [
+        "Verify all assets are reachable",
+        "Check image dimensions"
+      ]
+    },
+    {
+      "release_id": "R5",
+      "feature": "Core App Shell & Navigation",
+      "description": "Main React entry point, root component mounting, high\u2011level layout composition and top navigation bar component.",
+      "complexity": "M",
       "dependencies": [
-        "Project Setup & Configuration"
+        "Project Setup & Configuration",
+        "Global Styles & Typography",
+        "Constants & Data"
       ],
       "files_involved": [
-        "controllers/SetupDatabaseController.php"
+        "src/main.jsx",
+        "src/App.jsx",
+        "src/components/NavBar.jsx"
       ],
       "validation_requirements": [
-        "Verify database connection",
-        "Verify database schema"
+        "Run integration tests",
+        "Check that NavBar renders"
       ]
     },
     {
-      "release_id": "4",
-      "feature": "Image Management",
-      "description": "Image fetching and saving",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "controllers/ImageFetchController.php"
-      ],
-      "validation_requirements": [
-        "Verify image fetching",
-        "Verify image saving"
-      ]
-    },
-    {
-      "release_id": "5",
-      "feature": "URL Metadata",
-      "description": "Fetching metadata from URLs",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "controllers/UrlMetadataController.php"
-      ],
-      "validation_requirements": [
-        "Verify metadata fetching"
-      ]
-    },
-    {
-      "release_id": "6",
-      "feature": "App Info",
-      "description": "Getting information about the application",
+      "release_id": "R6",
+      "feature": "Hero Section",
+      "description": "Landing hero with animated title, responsive media queries and background video handling.",
       "complexity": "XS",
       "dependencies": [
-        "Project Setup & Configuration"
+        "Core App Shell & Navigation",
+        "Global Styles & Typography"
       ],
       "files_involved": [
-        "controllers/AppInfoController.php"
+        "src/sections/HeroSection.jsx"
       ],
       "validation_requirements": [
-        "Verify app info"
+        "Visual test of hero animation",
+        "Verify video loads"
       ]
     },
     {
-      "release_id": "7",
-      "feature": "Frontend Build Configuration",
-      "description": "Configuration files for building the frontend application",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [],
-      "validation_requirements": [
-        "Verify frontend build"
-      ]
-    },
-    {
-      "release_id": "8",
-      "feature": "Authentication",
-      "description": "User authentication and session management",
+      "release_id": "R7",
+      "feature": "Brand Message Section",
+      "description": "Section presenting brand messages with split\u2011text animations.",
       "complexity": "M",
       "dependencies": [
-        "Project Setup & Configuration"
+        "Core App Shell & Navigation",
+        "Global Styles & Typography"
       ],
       "files_involved": [
-        "controllers/AuthLoginController.php",
-        "controllers/AuthLogoutController.php",
-        "controllers/UserCreateController.php",
-        "controllers/UserDeleteController.php",
-        "controllers/UserGetController.php",
-        "controllers/UserPasswordUpdateController.php",
-        "controllers/UserUsernameUpdateController.php"
+        "src/sections/MessageSection.jsx"
       ],
       "validation_requirements": [
-        "Verify authentication",
-        "Verify session management"
+        "Check split\u2011text animation",
+        "Validate responsive layout"
       ]
     },
     {
-      "release_id": "9",
-      "feature": "Item Management",
-      "description": "Item creation, deletion, and updating",
-      "complexity": "L",
-      "dependencies": [
-        "Authentication",
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "controllers/ItemsCreateController.php",
-        "controllers/ItemsDeleteController.php",
-        "controllers/ItemsFetchMetadataController.php",
-        "controllers/ItemsGetController.php",
-        "controllers/ItemsTagsUpdateController.php",
-        "controllers/ItemsUpdateController.php"
-      ],
-      "validation_requirements": [
-        "Verify item creation",
-        "Verify item deletion",
-        "Verify item updating"
-      ]
-    },
-    {
-      "release_id": "10",
-      "feature": "Tag Management",
-      "description": "Tag creation, deletion, and updating",
-      "complexity": "M",
-      "dependencies": [
-        "Authentication",
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "controllers/TagsCreateController.php",
-        "controllers/TagsDeleteController.php",
-        "controllers/TagsUpdateColorController.php",
-        "controllers/TagsUpdateController.php",
-        "controllers/TagsUpdatePinnedController.php"
-      ],
-      "validation_requirements": [
-        "Verify tag creation",
-        "Verify tag deletion",
-        "Verify tag updating"
-      ]
-    },
-    {
-      "release_id": "11",
-      "feature": "Import and Export",
-      "description": "Importing and exporting data from other services",
-      "complexity": "M",
-      "dependencies": [
-        "Authentication",
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "controllers/ImportBookmarksController.php",
-        "controllers/ImportPocketController.php"
-      ],
-      "validation_requirements": [
-        "Verify import",
-        "Verify export"
-      ]
-    },
-    {
-      "release_id": "12",
-      "feature": "Routing",
-      "description": "Handling of HTTP requests and routing to controllers",
-      "complexity": "L",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "framework/Router.php"
-      ],
-      "validation_requirements": [
-        "Verify routing"
-      ]
-    },
-    {
-      "release_id": "13",
-      "feature": "Middleware",
-      "description": "Implementation of middleware for authentication, CSRF protection, and database migrations",
-      "complexity": "L",
-      "dependencies": [
-        "Project Setup & Configuration",
-        "Routing"
-      ],
-      "files_involved": [
-        "framework/Middlewares/AuthenticationMiddleware.php",
-        "framework/Middlewares/CSRFMiddleware.php",
-        "framework/Middlewares/DatabaseMigrations.php",
-        "framework/Middlewares/MiddlewareAbstract.php"
-      ],
-      "validation_requirements": [
-        "Verify middleware"
-      ]
-    },
-    {
-      "release_id": "14",
-      "feature": "Error Handling",
-      "description": "Handling of exceptions and errors, including validation and database errors",
-      "complexity": "M",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "framework/Exceptions/DatabaseNotFound.php",
-        "framework/Exceptions/DataWriteException.php",
-        "framework/Exceptions/ForbiddenException.php",
-        "framework/Exceptions/NotFoundException.php",
-        "framework/Exceptions/UnauthorizedException.php",
-        "framework/Exceptions/ValidationException.php"
-      ],
-      "validation_requirements": [
-        "Verify error handling"
-      ]
-    },
-    {
-      "release_id": "15",
-      "feature": "Response Handling",
-      "description": "Handling of HTTP responses, including data, page, and media responses",
-      "complexity": "M",
-      "dependencies": [
-        "Project Setup & Configuration",
-        "Routing"
-      ],
-      "files_involved": [
-        "framework/Responses/DataResponse.php",
-        "framework/Responses/MediaResponse.php",
-        "framework/Responses/PageResponse.php",
-        "framework/Responses/RedirectResponse.php",
-        "framework/Responses/ResponseInterface.php"
-      ],
-      "validation_requirements": [
-        "Verify response handling"
-      ]
-    },
-    {
-      "release_id": "16",
-      "feature": "CSRF Protection",
-      "description": "Implementation of CSRF protection using tokens and cookies",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration",
-        "Middleware"
-      ],
-      "files_involved": [
-        "framework/CSRFProtection.php"
-      ],
-      "validation_requirements": [
-        "Verify CSRF protection"
-      ]
-    },
-    {
-      "release_id": "17",
-      "feature": "Flash Messages",
-      "description": "Implementation of flash messages for user feedback",
+      "release_id": "R8",
+      "feature": "ClipPath Title Animation",
+      "description": "Component that displays title animations using GSAP clip\u2011path.",
       "complexity": "XS",
       "dependencies": [
-        "Project Setup & Configuration"
+        "Core App Shell & Navigation",
+        "Global Styles & Typography"
       ],
       "files_involved": [
-        "framework/FlashMessages.php"
+        "src/components/ClipPathTitle.jsx"
       ],
       "validation_requirements": [
-        "Verify flash messages"
+        "Run GSAP animation test"
       ]
     },
     {
-      "release_id": "18",
-      "feature": "Controller Interface",
-      "description": "Definition of the controller interface for handling requests",
+      "release_id": "R9",
+      "feature": "Video Pin Section",
+      "description": "Component that displays video pins with GSAP interactions.",
       "complexity": "XS",
       "dependencies": [
-        "Project Setup & Configuration",
-        "Routing"
+        "Core App Shell & Navigation",
+        "Global Styles & Typography"
       ],
       "files_involved": [
-        "framework/ControllerInterface.php"
+        "src/components/VideoPinSection.jsx"
       ],
       "validation_requirements": [
-        "Verify controller interface"
+        "Verify video playback on pin click"
       ]
     },
     {
-      "release_id": "19",
-      "feature": "App Component",
-      "description": "The main application component",
+      "release_id": "R10",
+      "feature": "Flavor Slider Component",
+      "description": "Horizontal flavor carousel with scroll\u2011triggered GSAP animations.",
+      "complexity": "XS",
+      "dependencies": [
+        "Core App Shell & Navigation",
+        "Constants & Data",
+        "Global Styles & Typography"
+      ],
+      "files_involved": [
+        "src/components/FlavorSlider.jsx"
+      ],
+      "validation_requirements": [
+        "Test carousel scroll behavior"
+      ]
+    },
+    {
+      "release_id": "R11",
+      "feature": "Flavor Title Component",
+      "description": "Title component used within the flavor showcase.",
+      "complexity": "XS",
+      "dependencies": [
+        "Flavor Slider Component"
+      ],
+      "files_involved": [
+        "src/components/FlavorTitle.jsx"
+      ],
+      "validation_requirements": [
+        "Check title renders correctly"
+      ]
+    },
+    {
+      "release_id": "R12",
+      "feature": "Flavor Section",
+      "description": "Section that integrates the flavor slider and title into the page layout.",
+      "complexity": "XS",
+      "dependencies": [
+        "Core App Shell & Navigation",
+        "Constants & Data",
+        "Global Styles & Typography"
+      ],
+      "files_involved": [
+        "src/sections/FlavorSection.jsx"
+      ],
+      "validation_requirements": [
+        "Validate section layout"
+      ]
+    },
+    {
+      "release_id": "R13",
+      "feature": "Nutrition Section",
+      "description": "Displays nutrient information with responsive layout and GSAP split\u2011text effects.",
       "complexity": "M",
       "dependencies": [
-        "Project Setup & Configuration",
-        "Frontend Build Configuration"
+        "Core App Shell & Navigation",
+        "Constants & Data",
+        "Global Styles & Typography"
       ],
       "files_involved": [
-        "frontend/src/App.tsx",
-        "frontend/src/index.css"
+        "src/sections/NutritionSection.jsx"
       ],
       "validation_requirements": [
-        "Verify app component"
+        "Check nutrient data rendering",
+        "Test split\u2011text animation"
       ]
     },
     {
-      "release_id": "20",
-      "feature": "Theme Management",
-      "description": "Management of application themes",
-      "complexity": "S",
-      "dependencies": [
-        "App Component"
-      ],
-      "files_involved": [
-        "frontend/src/components/ThemeProvider.tsx"
-      ],
-      "validation_requirements": [
-        "Verify theme management"
-      ]
-    },
-    {
-      "release_id": "21",
-      "feature": "Edit Item Component",
-      "description": "Component for editing items",
-      "complexity": "L",
-      "dependencies": [
-        "App Component",
-        "Theme Management"
-      ],
-      "files_involved": [
-        "frontend/src/components/EditItem/DuplicatesList.tsx",
-        "frontend/src/components/EditItem/EditItemDialog.tsx",
-        "frontend/src/components/EditItem/EditItemForm.tsx",
-        "frontend/src/components/EditItem/TagPath.tsx",
-        "frontend/src/components/EditItem/TagSelect.tsx"
-      ],
-      "validation_requirements": [
-        "Verify edit item component"
-      ]
-    },
-    {
-      "release_id": "22",
-      "feature": "Settings Component",
-      "description": "Component for application settings",
-      "complexity": "L",
-      "dependencies": [
-        "App Component",
-        "Theme Management"
-      ],
-      "files_involved": [
-        "frontend/src/components/Settings/SettingsAbout.tsx",
-        "frontend/src/components/Settings/SettingsDialog.tsx",
-        "frontend/src/components/Settings/SettingsImport.tsx",
-        "frontend/src/components/Settings/Auth/UserCreate.tsx",
-        "frontend/src/components/Settings/Auth/UserPasswordEdit.tsx",
-        "frontend/src/components/Settings/Auth/UserUsernameEdit.tsx"
-      ],
-      "validation_requirements": [
-        "Verify settings component"
-      ]
-    },
-    {
-      "release_id": "23",
-      "feature": "Integrations Component",
-      "description": "Component for application integrations",
+      "release_id": "R14",
+      "feature": "Benefits & Testimonials",
+      "description": "Sections that showcase product benefits and customer testimonials.",
       "complexity": "M",
       "dependencies": [
-        "Settings Component"
+        "Core App Shell & Navigation",
+        "Global Styles & Typography"
       ],
       "files_involved": [
-        "frontend/src/components/Settings/Integrations/AppleShortcut.tsx",
-        "frontend/src/components/Settings/Integrations/Bookmarklet.tsx",
-        "frontend/src/components/Settings/Integrations/InstallApp.tsx"
+        "src/sections/BenefitSection.jsx",
+        "src/sections/TestimonialSection.jsx"
       ],
       "validation_requirements": [
-        "Verify integrations component"
+        "Verify benefit cards display",
+        "Check testimonial carousel"
       ]
     },
     {
-      "release_id": "24",
-      "feature": "Sidebar Component",
-      "description": "Component for the application sidebar",
-      "complexity": "M",
-      "dependencies": [
-        "App Component"
-      ],
-      "files_involved": [
-        "frontend/src/components/Sidebar/AppSidebar.tsx",
-        "frontend/src/components/Sidebar/DeleteTagDialog.tsx",
-        "frontend/src/components/Sidebar/NavMain.tsx",
-        "frontend/src/components/Sidebar/NavTags.tsx",
-        "frontend/src/components/Sidebar/NavUser.tsx"
-      ],
-      "validation_requirements": [
-        "Verify sidebar component"
-      ]
-    },
-    {
-      "release_id": "25",
-      "feature": "Sidebar",
-      "description": "Sidebar component and related functionality",
-      "complexity": "M",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "frontend/src/components/Sidebar/SettingsButton.tsx",
-        "frontend/src/components/Sidebar/SidebarTag.tsx",
-        "frontend/src/components/Sidebar/SidebarToggler.tsx",
-        "frontend/src/components/Sidebar/ThemeToggler.tsx"
-      ],
-      "validation_requirements": [
-        "Verify sidebar"
-      ]
-    },
-    {
-      "release_id": "26",
-      "feature": "Table",
-      "description": "Table component and related functionality",
-      "complexity": "L",
-      "dependencies": [
-        "Project Setup & Configuration",
-        "Sidebar"
-      ],
-      "files_involved": [
-        "frontend/src/components/Table/FieldFormatters.tsx",
-        "frontend/src/components/Table/Controls/BulkActionControls.tsx",
-        "frontend/src/components/Table/Controls/DeleteDialog.tsx",
-        "frontend/src/components/Table/Controls/Pagination.tsx",
-        "frontend/src/components/Table/Controls/Search.tsx",
-        "frontend/src/components/Table/Controls/Sorter.tsx",
-        "frontend/src/components/Table/Controls/TagSelect.tsx",
-        "frontend/src/components/Table/Fields/ItemActions.tsx",
-        "frontend/src/components/Table/Fields/PreviewImage.tsx",
-        "frontend/src/components/Table/Fields/TagBadge.tsx",
-        "frontend/src/components/Table/Layouts/ListLayout.tsx",
-        "frontend/src/components/Table/Layouts/TableLayout.tsx"
-      ],
-      "validation_requirements": [
-        "Verify table component"
-      ]
-    },
-    {
-      "release_id": "27",
-      "feature": "UI Components",
-      "description": "Reusable UI components",
-      "complexity": "XL",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "frontend/src/components/ui/badge.tsx",
-        "frontend/src/components/ui/command.tsx",
-        "frontend/src/components/ui/sidebar.tsx",
-        "frontend/src/components/ui/alert-dialog.tsx",
-        "frontend/src/components/ui/sheet.tsx",
-        "frontend/src/components/ui/resizable.tsx",
-        "frontend/src/components/ui/popover.tsx",
-        "frontend/src/components/ui/avatar.tsx",
-        "frontend/src/components/ui/alert.tsx",
-        "frontend/src/components/ui/breadcrumb.tsx",
-        "frontend/src/components/ui/field.tsx",
-        "frontend/src/components/ui/table.tsx",
-        "frontend/src/components/ui/spinner.tsx",
-        "frontend/src/components/ui/toggle.tsx",
-        "frontend/src/components/ui/dialog.tsx",
-        "frontend/src/components/ui/textarea.tsx",
-        "frontend/src/components/ui/drawer.tsx",
-        "frontend/src/components/ui/scroll-area.tsx",
-        "frontend/src/components/ui/sonner.tsx",
-        "frontend/src/components/ui/input-group.tsx",
-        "frontend/src/components/ui/dropdown-menu.tsx",
-        "frontend/src/components/ui/button.tsx",
-        "frontend/src/components/ui/card.tsx",
-        "frontend/src/components/ui/form.tsx",
-        "frontend/src/components/ui/item.tsx",
-        "frontend/src/components/ui/select.tsx",
-        "frontend/src/components/ui/toggle-group.tsx",
-        "frontend/src/components/ui/tooltip.tsx",
-        "frontend/src/components/ui/combobox.tsx",
-        "frontend/src/components/ui/tabs.tsx"
-      ],
-      "validation_requirements": [
-        "Verify UI components"
-      ]
-    },
-    {
-      "release_id": "28",
-      "feature": "Hooks",
-      "description": "Custom React hooks",
+      "release_id": "R15",
+      "feature": "Footer & Socials",
+      "description": "Site footer containing branding, navigation links and social media icons.",
       "complexity": "S",
       "dependencies": [
-        "Project Setup & Configuration"
+        "Core App Shell & Navigation",
+        "Global Styles & Typography"
       ],
       "files_involved": [
-        "frontend/src/hooks/use-install-experience.ts",
-        "frontend/src/hooks/use-mobile.ts",
-        "frontend/src/hooks/useItemListState.ts",
-        "frontend/src/hooks/useUrlState.ts"
+        "src/sections/FooterSection.jsx"
       ],
       "validation_requirements": [
-        "Verify hooks"
-      ]
-    },
-    {
-      "release_id": "29",
-      "feature": "Layouts",
-      "description": "Page layouts",
-      "complexity": "M",
-      "dependencies": [
-        "UI Components",
-        "Hooks"
-      ],
-      "files_involved": [
-        "frontend/src/layouts/Auth.tsx",
-        "frontend/src/layouts/Dashboard.tsx",
-        "frontend/src/layouts/Loading.tsx",
-        "frontend/src/layouts/NotFound.tsx",
-        "frontend/src/layouts/Onboarding.tsx"
-      ],
-      "validation_requirements": [
-        "Verify layouts"
-      ]
-    },
-    {
-      "release_id": "30",
-      "feature": "Pages",
-      "description": "Individual pages",
-      "complexity": "L",
-      "dependencies": [
-        "Layouts",
-        "UI Components",
-        "Hooks"
-      ],
-      "files_involved": [
-        "frontend/src/pages/CreateItem.tsx",
-        "frontend/src/pages/EditItem.tsx",
-        "frontend/src/pages/ItemList.tsx",
-        "frontend/src/pages/Login.tsx",
-        "frontend/src/pages/Setup.tsx",
-        "frontend/src/pages/SetupAuth.tsx",
-        "frontend/src/pages/SetupImport.tsx",
-        "frontend/src/pages/SetupIntegrations.tsx"
-      ],
-      "validation_requirements": [
-        "Verify pages"
-      ]
-    },
-    {
-      "release_id": 31,
-      "feature": "Root Files",
-      "description": "Remaining root files not covered by primary releases",
-      "complexity": "S",
-      "dependencies": [],
-      "files_involved": [
-        "SECURITY.md",
-        "routes.php"
-      ],
-      "validation_requirements": [
-        "Verify root files are present"
-      ]
-    },
-    {
-      "release_id": 32,
-      "feature": "Controllers Files",
-      "description": "Remaining controllers files not covered by primary releases",
-      "complexity": "S",
-      "dependencies": [],
-      "files_involved": [
-        "controllers/TagsController.php"
-      ],
-      "validation_requirements": [
-        "Verify controllers files are present"
-      ]
-    },
-    {
-      "release_id": 33,
-      "feature": "Frontend Files (part 1)",
-      "description": "Remaining frontend files not covered by primary releases",
-      "complexity": "M",
-      "dependencies": [],
-      "files_involved": [
-        "frontend/index.html",
-        "frontend/src/components/Logo.tsx",
-        "frontend/src/components/Settings/Auth/UserDelete.tsx",
-        "frontend/src/components/Settings/Integrations/BrowserExtension.tsx",
-        "frontend/src/components/Settings/Integrations/InstallStep.tsx",
-        "frontend/src/components/Settings/SettingsAuth.tsx",
-        "frontend/src/components/Settings/SettingsIntegrations.tsx",
-        "frontend/src/components/Table/Controls/FieldToggler.tsx",
-        "frontend/src/components/Table/Controls/LayoutSelector.tsx",
-        "frontend/src/components/Table/Layouts/CardsLayout.tsx",
-        "frontend/src/components/ui/checkbox.tsx",
-        "frontend/src/components/ui/collapsible.tsx",
-        "frontend/src/components/ui/input.tsx",
-        "frontend/src/components/ui/kbd.tsx",
-        "frontend/src/components/ui/label.tsx",
-        "frontend/src/components/ui/separator.tsx",
-        "frontend/src/components/ui/skeleton.tsx",
-        "frontend/src/contexts/SidebarPanelContext.ts",
-        "frontend/src/lib/install-env.ts",
-        "frontend/src/lib/types.ts"
-      ],
-      "validation_requirements": [
-        "Verify frontend files are present"
-      ]
-    },
-    {
-      "release_id": 34,
-      "feature": "Frontend Files (part 2)",
-      "description": "Remaining frontend files not covered by primary releases",
-      "complexity": "M",
-      "dependencies": [],
-      "files_involved": [
-        "frontend/src/lib/utils.ts",
-        "frontend/src/main.tsx",
-        "frontend/src/store/api.ts",
-        "frontend/src/store/mainStore.ts",
-        "frontend/src/store/preferencesStore.ts",
-        "frontend/src/store/storeContext.ts",
-        "frontend/src/vite-env.d.ts"
-      ],
-      "validation_requirements": [
-        "Verify frontend files are present"
-      ]
-    },
-    {
-      "release_id": 35,
-      "feature": "Models Files",
-      "description": "Remaining models files not covered by primary releases",
-      "complexity": "S",
-      "dependencies": [],
-      "files_involved": [
-        "models/Item.php",
-        "models/ItemCreator.php",
-        "models/Repository.php",
-        "models/TagCreator.php"
-      ],
-      "validation_requirements": [
-        "Verify models files are present"
-      ]
-    },
-    {
-      "release_id": 36,
-      "feature": "Public Files",
-      "description": "Remaining public files not covered by primary releases",
-      "complexity": "S",
-      "dependencies": [],
-      "files_involved": [
-        "public/.gitignore",
-        "public/api/index.php"
-      ],
-      "validation_requirements": [
-        "Verify public files are present"
-      ]
-    },
-    {
-      "release_id": 37,
-      "feature": "Storage Files",
-      "description": "Remaining storage files not covered by primary releases",
-      "complexity": "S",
-      "dependencies": [],
-      "files_involved": [
-        "storage/.gitignore"
-      ],
-      "validation_requirements": [
-        "Verify storage files are present"
-      ]
-    },
-    {
-      "release_id": 38,
-      "feature": "Utils Files",
-      "description": "Remaining utils files not covered by primary releases",
-      "complexity": "M",
-      "dependencies": [],
-      "files_involved": [
-        "utils/BookmarkImporter.php",
-        "utils/DOMParser.php",
-        "utils/Image.php",
-        "utils/PocketImporter.php",
-        "utils/safe-http-functions.php",
-        "utils/util-functions.php"
-      ],
-      "validation_requirements": [
-        "Verify utils files are present"
-      ]
-    },
-    {
-      "release_id": 39,
-      "feature": "Views Files",
-      "description": "Remaining views files not covered by primary releases",
-      "complexity": "S",
-      "dependencies": [],
-      "files_involved": [
-        "views/layouts/primary.php",
-        "views/pages/error.php"
-      ],
-      "validation_requirements": [
-        "Verify views files are present"
+        "Check footer links",
+        "Validate social icons load"
       ]
     }
   ]

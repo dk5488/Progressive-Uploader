@@ -1,105 +1,104 @@
 
-  
-#  <img height="27px" src="https://github.com/user-attachments/assets/f96ecc14-bc29-4769-828e-c94cb3c87b9e" /> Faved
-
-A private open-source bookmark manager built to handle large collections and advanced use cases. Optimized for ease-of-use and efficiency.
-
 <div align="center">
-  
-  🧪 **[Try Live Demo](https://demo.faved.to/?utm_source=github.com&utm_medium=readme)** | 🌐 **[Visit Website](https://faved.to/?utm_source=github.com&utm_medium=readme)** | 📖 **[Read the Docs](https://faved.to/docs/getting-started/introduction?utm_source=github.com&utm_medium=readme)**
+  <a href="https://github.com/Itssanthoshhere/Chug-SPYLT" target="_blank">
+    <img src="public/images/Final.png" style="border-radius:10px;" alt="Chug SPYLT Banner">
+  </a>
+  <br />
+
+  <div>
+    <img src="https://img.shields.io/badge/-React_JS_v19-black?style=for-the-badge&logo=react&logoColor=61DAFB&color=20232A" alt="ReactJS" />
+    <img src="https://img.shields.io/badge/-Tailwind_CSS_v4-black?style=for-the-badge&logo=tailwindcss&logoColor=06B6D4&color=030712" alt="TailwindCSS" />
+    <img src="https://img.shields.io/badge/-GSAP-black?style=for-the-badge&logo=greensock&logoColor=88CE02&color=111111" alt="GSAP" />
+  </div>
+
+  <h3 align="center">🥛 Chug SPYLT – Awwwards-Inspired Interactive Website</h3>
+  <p align="center">
+    Creating a stunning, immersive web experience using <b>GSAP</b>, <b>ReactJS</b>, and <b>Tailwind CSS</b>.  
+    Inspired by Awwwards’ finest interactive designs.
+  </p>
+
+  <a href="https://chug-spylt.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/🚀%20Live%20Demo-brightgreen?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
+  </a>
 </div>
 
+---
 
-<div align="center">
-  
-  📚 **[Blog](https://faved.to/blog?utm_source=github.com&utm_medium=readme)** | 𝕏 **[Twitter](https://x.com/FavedTool)** | 💬 **[Discord](https://discord.gg/VZrtc8vWp7)**
-</div>
+## 📋 Table of Contents
+1. 🚀 [Introduction](#introduction)  
+2. ⚙️ [Tech Stack](#tech-stack)  
+3. ✨ [Features](#features)  
+4. 🤸 [Quick Start](#quick-start)  
+5. 🕸️ [Snippets](#snippets-code-to-copy)  
+6. 🔗 [Assets](#assets)  
+7. 🌐 [Community](#community)  
 
-<img width="1660" height="1004" alt="screenshot-list-desktop-mobile-safari" src="https://github.com/user-attachments/assets/24b08a59-61dd-48a4-a954-d58375fb3c57" />
+---
 
-## Features
+## 🚀 Introduction
+**Chug SPYLT** is a cutting-edge interactive website crafted for a premium visual and motion experience.  
+With **GSAP’s ScrollTrigger and ScrollSmoother**, this project highlights fluid animations, dynamic text reveals, and immersive parallax effects.  
 
-### 🏷️ Advanced Tagging
+It’s more than just a site—it’s an **Awwwards-style web experience**, blending creativity and performance seamlessly.  
 
-* Organize bookmarks with **nested tags** for structured grouping (e.g., place *Go* and *Python* under *Programming Languages → Backend*)
-* **Customize tags** with color and description *(icons — coming soon)*
-* **Search and filter tags** directly from the sidebar
-* Optional **tag rollup** to include items from child tags
-* **Pin frequently used tags** for quick access
+---
 
-### 🤖 Smart Bookmark Management
+## ⚙️ Tech Stack
+- ⚛️ **React 19** – Component-driven architecture  
+- 🌀 **Tailwind CSS v4** – Utility-first responsive styling  
+- 🎞️ **GSAP (GreenSock Animation Platform)** – High-performance animations  
 
-* **Automatic fetching** of titles, descriptions, and preview images
-* **Duplicate detection** when adding bookmarks
-* **Automated tagging** *(planned)*
+---
 
-### ⚡ Powerful UI Designed for Efficiency
+## ✨ Features
+- ✨ Parallax scrolling with depth & smoothness  
+- ⚡️ Advanced **clip-path** animations  
+- 🕹️ ScrollTrigger & ScrollSmoother mastery  
+- 😉 Text reveal like Awwwards projects  
+- 👏 Layered GSAP timelines for storytelling  
+- 📱 Fully responsive, optimized for mobile  
 
-* All major actions — bookmark and tag search, filtering, and editing — in one click away with no need to navigate between screens
-* Fully responsive — works perfectly on mobile, tablet, and desktop
-* Installable as a **PWA** for an app-like, near-native experience on mobile
-* System-synced **Light/Dark mode**
-* **Instant search** and flexible **sorting**
-* **Bulk actions** (deleting, refetching, tagging)
-* Customizable **layouts (card/list/table), fields, and sidebar**
+---
 
-### 🔗 Integrations
+## 🤸 Quick Start
 
-* [Chrome browser extension](https://chromewebstore.google.com/detail/faved-%E2%80%94-save-bookmarks-li/lejmncpaclknlpnpfinmpnfppaokidmi)
-* **Lightweight browser bookmarklet** — save securely from any browser without extensions
-* **Apple Shortcuts** — integrate into native share sheet on iOS/MacOS/iPadOS
+```bash
+# 1. Clone the repo
+git clone https://github.com/Itssanthoshhere/Chug-SPYLT.git
+cd Chug-SPYLT
 
-### 📥 Import & Migration
+# 2. Install dependencies
+npm install
+# or
+yarn
 
-* Import from **Chrome, Safari, Firefox, Edge** with the original folder structure preserved thanks to nested tags
-* Migrate from **Raindrop.io, Pocket,** and other tools retaining original collections, tags and other data
+# 3. Start the dev server
+npm run dev
+# or
+yarn dev
+```
 
+---
 
+## 🔗 Assets
 
-## Overview video
+* 🎨 Design Inspiration → [SPYLT Official](https://www.spylt.com/)
+* 🛠️ Animations → [GSAP Docs](https://gsap.com/docs/)
+* 💻 Deployment → [Vercel](https://vercel.com/)
 
-https://github.com/user-attachments/assets/0ecbf26a-9ed8-49d9-a5ce-33d471c06fdf
+---
 
+## 🌐 Community
 
-## Get started
+👤 **Santhosh VS**
 
-- [Self-host for free](https://faved.to/docs/getting-started/installation?utm_source=github.com&utm_medium=readme) with no external dependencies. All data is stored locally.
-- [Start in the Cloud](https://app.faved.to/signup?utm_source=github.com&utm_medium=readme) with zero setup, automatic backups and support. Your data is secured with encryption.
+* GitHub: [Itssanthoshhere](https://github.com/Itssanthoshhere)
+* LinkedIn: [Santhosh VS](https://www.linkedin.com/in/thesanthoshvs/)
 
-## Documentation
+---
 
-- [Introduction](https://faved.to/docs/getting-started/introduction?utm_source=github.com&utm_medium=readme)
-- [Installation](https://faved.to/docs/getting-started/installation?utm_source=github.com&utm_medium=readme)
-- [Updating](https://faved.to/docs/getting-started/updating?utm_source=github.com&utm_medium=readme)
-- [Installing as a PWA app	](https://faved.to/docs/getting-started/installing-as-a-pwa-app?utm_source=github.com&utm_medium=readme)
-- [Using browser bookmarklet](https://faved.to/docs/getting-started/using-browser-bookmarklet?utm_source=github.com&utm_medium=readme)
-- [Saving with Apple shortcut](https://faved.to/docs/getting-started/saving-with-apple-shortcut?utm_source=github.com&utm_medium=readme)
-- [Adding and editing bookmarks](https://faved.to/docs/guides/adding-and-editing-bookmarks?utm_source=github.com&utm_medium=readme)
-- [Importing bookmarks](https://faved.to/docs/guides/importing-bookmarks?utm_source=github.com&utm_medium=readme)
-- [Organizing with tags](https://faved.to/docs/guides/organizing-with-tags?utm_source=github.com&utm_medium=readme)
-- [Finding and viewing bookmarks](https://faved.to/docs/guides/finding-and-viewing-bookmarks?utm_source=github.com&utm_medium=readme)
-- [Bulk actions](https://faved.to/docs/guides/bulk-actions?utm_source=github.com&utm_medium=readme)
-- [Changelog](https://github.com/denho/faved/releases)
+#### ⭐ Show Your Support
 
+If you like this project, **give it a star ⭐** and share it with others!
 
-## Project Structure
-
-- `/controllers`: Application controllers
-- `/frontend`: React frontend source files
-- `/framework`: Core framework components
-- `/models`: Data models
-- `/public`: Web-accessible files
-- `/storage`: Database storage
-- `/utils`: Utility classes
-- `/views`: HTML templates
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
-## Credits
-
-Faved uses only open source packages:
-
-- TypeScript, React, Tailwind, Shadcn UI and Vite for the frontend.
-- PHP 8, SQLite and Apache for the backend.
+---

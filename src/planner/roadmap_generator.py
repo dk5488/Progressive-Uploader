@@ -4,6 +4,13 @@ from src.llm.provider import LLMProvider
 from src.analyzer.repository_analyzer import RepositoryAnalyzer
 from src.state.state_manager import StateManager
 import os
+import sys
+
+if sys.stdout.encoding != "utf-8":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 # Threshold for batched processing — repos with more files than this
 # will be processed in chunks to avoid exceeding LLM token limits.

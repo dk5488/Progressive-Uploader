@@ -257,14 +257,13 @@ class GroqProvider(LLMProvider):
     CHARS_PER_TOKEN = 4
     MAX_INPUT_TOKENS = 10000  # Leave headroom below 12K TPM limit
 
-    # Fallback model chain — try smaller or alternative models if the primary fails/is unavailable
+    # Fallback model chain — try alternative available models if the primary fails/is unavailable
     FALLBACK_MODELS = [
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        "qwen/qwen3.8-27b",
         "llama-3.3-70b-versatile",
         "llama-3.1-8b-instant",
-        "llama3-70b-8192",
-        "llama3-8b-8192",
-        "gemma2-9b-it",
-        "mixtral-8x7b-32768"
     ]
 
     def __init__(self, api_key: Optional[str] = None):
@@ -277,7 +276,7 @@ class GroqProvider(LLMProvider):
         if not key:
             raise ValueError("GROQ_API_KEY is not set.")
         self.client = Groq(api_key=key)
-        self.model_name = "llama-3.3-70b-versatile"
+        self.model_name = "openai/gpt-oss-120b"
 
     def _estimate_tokens(self, text: str) -> int:
         """Rough token estimate: ~4 chars per token."""
@@ -290,8 +289,8 @@ class GroqProvider(LLMProvider):
         for model in models_to_try:
             messages = [{"role": "user", "content": prompt}]
             
-            # Use smaller max_tokens for smaller models
-            max_tokens = 4096 if ("70b" in model or "mixtral" in model) else 2048
+            # Use larger token limit for larger models
+            max_tokens = 8192 if any(m in model for m in ["120b", "70b", "mixtral", "qwen"]) else 4096
             
             kwargs = {
                 "model": model,
@@ -313,9 +312,10 @@ class GroqProvider(LLMProvider):
                     last_error = e
                     error_str = str(e).lower()
                     
-                    # Handle 404 / Model Not Found or Access errors — skip immediately to next model
-                    if "404" in str(e) or "does not exist" in error_str or "model_not_found" in error_str:
-                        print(f"  Model {model} not found or inaccessible. Trying next model...")
+                    # Handle 404 / Model Not Found or Access errors / decommissioned models
+                    if ("404" in str(e) or "does not exist" in error_str or "model_not_found" in error_str 
+                        or "model_decommissioned" in error_str or "decommissioned" in error_str):
+                        print(f"  Model {model} not available ({e}). Trying next model...")
                         break  # Move to next model
                     
                     # Handle 413 Request Too Large — skip to smaller model
@@ -394,12 +394,13 @@ Project Structure:
         
         # Estimate base prompt size (without content) to budget content truncation
         base_prompt = f"""
-Identify the logical features in this codebase. For each feature, estimate complexity (XS, S, M, L, XL) and list any dependencies on other features.
+Identify the logical, modular features in this codebase. For each feature, estimate complexity (XS, S, M, L, XL) and list any dependencies on other features.
 
-CRITICAL REQUIREMENT: EVERY single file in the file tree below MUST be assigned to at least one feature's "files_involved" list.
-This includes config files, DevOps files, documentation, utilities, models, framework files, routes, views, and frontend build configs.
-Create a "Project Setup & Configuration" feature for config/DevOps/documentation files.
-Do NOT use glob patterns. List each file individually.
+CRITICAL REQUIREMENTS:
+1. Break down the codebase into 8 to 15 granular, modular features representing distinct functional areas (e.g., "Project Setup & Configuration", "Global Styles & Typography", "Core App Shell & Entry", "Navigation & Header", "Hero Section", "Brand Message Section", "Interactive Video & Clip-Path Animations", "Flavor Slider & Showcase", "Product Media Assets", "Nutrition Section", "Benefits & Testimonials", "Footer & Socials").
+2. DO NOT lump unrelated files or the entire application into a single feature. "Project Setup & Configuration" should ONLY contain root configuration, build configs, package manifests, and documentation (e.g., package.json, package-lock.json, vite.config.js, eslint.config.js, .gitignore, README.md, index.html).
+3. EVERY single file in the file tree below MUST be assigned to at least one feature's "files_involved" list.
+4. Do NOT use glob patterns like "*". List each file individually by its relative path.
 
 Respond ONLY with a JSON object with key "features" containing an array. Each feature object must have: "name", "description", "complexity", "dependencies" (array of strings), "files_involved" (array of strings).
 
@@ -431,7 +432,8 @@ Remember:
 - Do NOT use glob patterns. List each file individually by its relative path.
 - Include a release for project setup/config files early on.
 
-Respond ONLY with a JSON array. Each release object must have: "release_id", "feature", "description", "complexity", "dependencies" (array), "files_involved" (array), "validation_requirements" (array).
+Respond ONLY with a JSON object with key "releases" containing an array of release objects.
+Each release object must have: "release_id", "feature", "description", "complexity", "dependencies" (array of strings), "files_involved" (array of strings), "validation_requirements" (array of strings).
 {file_tree_section}
 Features:
 {json.dumps(features, indent=2)}
@@ -453,7 +455,8 @@ Remember:
 - Do NOT use glob patterns. List each file individually.
 - Include a release for project setup/config files early on.
 
-Respond ONLY with a JSON array. Each release object must have: "release_id", "feature", "description", "complexity", "dependencies" (array), "files_involved" (array), "validation_requirements" (array).
+Respond ONLY with a JSON object with key "releases" containing an array of release objects.
+Each release object must have: "release_id", "feature", "description", "complexity", "dependencies" (array of strings), "files_involved" (array of strings), "validation_requirements" (array of strings).
 
 Features:
 {json.dumps(features, indent=2)}

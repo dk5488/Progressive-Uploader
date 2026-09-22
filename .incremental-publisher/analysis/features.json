@@ -2,575 +2,217 @@
   "features": [
     {
       "name": "Project Setup & Configuration",
-      "description": "Config and DevOps files for project setup and configuration",
-      "complexity": "M",
+      "description": "Root configuration, build scripts, package manifests, documentation and basic HTML entry point.",
+      "complexity": "XS",
       "dependencies": [],
       "files_involved": [
-        "framework/ServiceContainer.php",
-        "composer.lock",
-        "frontend/package.json",
-        "frontend/.prettierrc",
-        "frontend/package-lock.json",
-        "frontend/components.json",
-        "apache-conf/faved.conf",
-        "frontend/tsconfig.node.json",
-        "framework/helper-functions.php",
-        "package.json",
-        "docker-compose.yml",
-        "SECURITY.md",
-        "frontend/tsconfig.app.json",
-        "frontend/vite.config.ts",
-        ".github/ISSUE_TEMPLATE/bug_report.md",
-        "frontend/eslint.config.js",
-        "framework/bootstrap.php",
-        "frontend/src/lib/utils.ts",
-        "frontend/src/lib/install-env.ts",
-        "LICENSE",
-        "framework/Application.php",
         ".gitignore",
-        "frontend/.gitignore",
+        "eslint.config.js",
+        "index.html",
+        "package-lock.json",
+        "package.json",
         "README.md",
-        "init.php",
-        "Config.php",
-        "frontend/tsconfig.json",
-        "certbot-conf/.gitignore",
-        "tsconfig.json",
-        "frontend/src/lib/types.ts",
-        "Dockerfile.build",
-        "composer.json",
-        ".github/workflows/docker-publish.yml",
-        "app-info.json",
-        "docker-compose.dev.yml",
-        "Dockerfile.dev"
+        "vite.config.js"
       ]
     },
     {
-      "name": "Authentication",
-      "description": "User authentication and session management",
-      "complexity": "M",
+      "name": "Global Styles & Typography",
+      "description": "Tailwind CSS import, custom font-face, CSS variables and global typography definitions.",
+      "complexity": "S",
       "dependencies": [
         "Project Setup & Configuration"
       ],
       "files_involved": [
-        "controllers/AuthLoginController.php",
-        "controllers/AuthLogoutController.php",
-        "controllers/UserCreateController.php",
-        "controllers/UserDeleteController.php",
-        "controllers/UserGetController.php",
-        "controllers/UserPasswordUpdateController.php",
-        "controllers/UserUsernameUpdateController.php"
+        "src/index.css",
+        "public/fonts/ProximaNova-Regular.otf"
       ]
     },
     {
-      "name": "Item Management",
-      "description": "Item creation, deletion, and updating",
+      "name": "Core App Shell & Entry",
+      "description": "Main React entry point, root component mounting and high\u2011level layout composition.",
+      "complexity": "M",
+      "dependencies": [
+        "Project Setup & Configuration",
+        "Global Styles & Typography",
+        "Navigation & Header",
+        "Constants & Data"
+      ],
+      "files_involved": [
+        "src/main.jsx",
+        "src/App.jsx"
+      ]
+    },
+    {
+      "name": "Navigation & Header",
+      "description": "Top navigation bar component with logo and menu handling.",
+      "complexity": "S",
+      "dependencies": [
+        "Core App Shell & Entry"
+      ],
+      "files_involved": [
+        "src/components/NavBar.jsx"
+      ]
+    },
+    {
+      "name": "Hero Section",
+      "description": "Landing hero with animated title, responsive media queries and background video handling.",
       "complexity": "L",
       "dependencies": [
-        "Authentication",
-        "Project Setup & Configuration"
+        "Core App Shell & Entry",
+        "Global Styles & Typography"
       ],
       "files_involved": [
-        "controllers/ItemsCreateController.php",
-        "controllers/ItemsDeleteController.php",
-        "controllers/ItemsFetchMetadataController.php",
-        "controllers/ItemsGetController.php",
-        "controllers/ItemsTagsUpdateController.php",
-        "controllers/ItemsUpdateController.php"
+        "src/sections/HeroSection.jsx"
       ]
     },
     {
-      "name": "Tag Management",
-      "description": "Tag creation, deletion, and updating",
+      "name": "Brand Message Section",
+      "description": "Section presenting brand messages with split\u2011text animations.",
       "complexity": "M",
       "dependencies": [
-        "Authentication",
-        "Project Setup & Configuration"
+        "Core App Shell & Entry",
+        "Global Styles & Typography"
       ],
       "files_involved": [
-        "controllers/TagsCreateController.php",
-        "controllers/TagsDeleteController.php",
-        "controllers/TagsUpdateColorController.php",
-        "controllers/TagsUpdateController.php",
-        "controllers/TagsUpdatePinnedController.php"
+        "src/sections/MessageSection.jsx"
       ]
     },
     {
-      "name": "Import and Export",
-      "description": "Importing and exporting data from other services",
-      "complexity": "M",
-      "dependencies": [
-        "Authentication",
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "controllers/ImportBookmarksController.php",
-        "controllers/ImportPocketController.php"
-      ]
-    },
-    {
-      "name": "Image Management",
-      "description": "Image fetching and saving",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "controllers/ImageFetchController.php"
-      ]
-    },
-    {
-      "name": "Database Setup",
-      "description": "Setting up the database for the application",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "controllers/SetupDatabaseController.php"
-      ]
-    },
-    {
-      "name": "URL Metadata",
-      "description": "Fetching metadata from URLs",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "controllers/UrlMetadataController.php"
-      ]
-    },
-    {
-      "name": "App Info",
-      "description": "Getting information about the application",
-      "complexity": "XS",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "controllers/AppInfoController.php"
-      ]
-    },
-    {
-      "name": "Routing",
-      "description": "Handling of HTTP requests and routing to controllers",
+      "name": "Interactive Video & Clip\u2011Path Animations",
+      "description": "Components that display video pins and clip\u2011path title animations using GSAP.",
       "complexity": "L",
       "dependencies": [
-        "Project Setup & Configuration"
+        "Core App Shell & Entry",
+        "Global Styles & Typography"
       ],
       "files_involved": [
-        "framework/Router.php",
-        "framework/Application.php"
+        "src/components/ClipPathTitle.jsx",
+        "src/components/VideoPinSection.jsx"
       ]
     },
     {
-      "name": "Middleware",
-      "description": "Implementation of middleware for authentication, CSRF protection, and database migrations",
+      "name": "Flavor Slider & Showcase",
+      "description": "Horizontal flavor carousel with scroll\u2011triggered GSAP animations and title component.",
       "complexity": "L",
       "dependencies": [
-        "Project Setup & Configuration",
-        "Routing"
+        "Core App Shell & Entry",
+        "Constants & Data",
+        "Global Styles & Typography"
       ],
       "files_involved": [
-        "framework/Middlewares/AuthenticationMiddleware.php",
-        "framework/Middlewares/CSRFMiddleware.php",
-        "framework/Middlewares/DatabaseMigrations.php",
-        "framework/Middlewares/MiddlewareAbstract.php"
+        "src/components/FlavorSlider.jsx",
+        "src/components/FlavorTitle.jsx",
+        "src/sections/FlavorSection.jsx"
       ]
     },
     {
-      "name": "Error Handling",
-      "description": "Handling of exceptions and errors, including validation and database errors",
-      "complexity": "M",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "framework/Exceptions/DatabaseNotFound.php",
-        "framework/Exceptions/DataWriteException.php",
-        "framework/Exceptions/ForbiddenException.php",
-        "framework/Exceptions/NotFoundException.php",
-        "framework/Exceptions/UnauthorizedException.php",
-        "framework/Exceptions/ValidationException.php"
-      ]
-    },
-    {
-      "name": "Response Handling",
-      "description": "Handling of HTTP responses, including data, page, and media responses",
-      "complexity": "M",
-      "dependencies": [
-        "Project Setup & Configuration",
-        "Routing"
-      ],
-      "files_involved": [
-        "framework/Responses/DataResponse.php",
-        "framework/Responses/MediaResponse.php",
-        "framework/Responses/PageResponse.php",
-        "framework/Responses/RedirectResponse.php",
-        "framework/Responses/ResponseInterface.php"
-      ]
-    },
-    {
-      "name": "CSRF Protection",
-      "description": "Implementation of CSRF protection using tokens and cookies",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration",
-        "Middleware"
-      ],
-      "files_involved": [
-        "framework/CSRFProtection.php"
-      ]
-    },
-    {
-      "name": "Flash Messages",
-      "description": "Implementation of flash messages for user feedback",
-      "complexity": "XS",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "framework/FlashMessages.php"
-      ]
-    },
-    {
-      "name": "Controller Interface",
-      "description": "Definition of the controller interface for handling requests",
-      "complexity": "XS",
-      "dependencies": [
-        "Project Setup & Configuration",
-        "Routing"
-      ],
-      "files_involved": [
-        "framework/ControllerInterface.php"
-      ]
-    },
-    {
-      "name": "Frontend Build Configuration",
-      "description": "Configuration files for building the frontend application",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "frontend/tsconfig.app.json",
-        "frontend/tsconfig.json",
-        "frontend/tsconfig.node.json",
-        "frontend/vite.config.ts"
-      ]
-    },
-    {
-      "name": "Public Assets",
-      "description": "Publicly accessible assets, such as images and manifest files",
+      "name": "Product Media Assets",
+      "description": "All static image, video and icon assets used throughout the site.",
       "complexity": "XS",
       "dependencies": [],
       "files_involved": [
-        "frontend/public/logo.png",
-        "frontend/public/manifest.webmanifest",
-        "frontend/public/favicons/android-chrome-96x96.png",
-        "frontend/public/favicons/apple-touch-icon.png",
-        "frontend/public/favicons/favicon-16x16.png",
-        "frontend/public/favicons/favicon-32x32.png",
-        "frontend/public/favicons/icon-192x192.png",
-        "frontend/public/favicons/icon-512x512.png",
-        "frontend/public/favicons/mstile-150x150.png"
+        "public/favicon.ico",
+        "public/vite.svg",
+        "public/images/arrow.svg",
+        "public/images/big-img.png",
+        "public/images/black-bg.svg",
+        "public/images/black-drink.webp",
+        "public/images/black-elements.webp",
+        "public/images/blue-bg.svg",
+        "public/images/blue-drink.webp",
+        "public/images/blue-elements.webp",
+        "public/images/brown-bg.svg",
+        "public/images/brown-drink.webp",
+        "public/images/brown-elements.webp",
+        "public/images/circle-text.svg",
+        "public/images/Final.png",
+        "public/images/footer-dip.png",
+        "public/images/footer-drink.png",
+        "public/images/hero-bg.png",
+        "public/images/hero-img.png",
+        "public/images/insta.svg",
+        "public/images/logo.png",
+        "public/images/nav-logo.svg",
+        "public/images/orange-bg.svg",
+        "public/images/orange-drink.webp",
+        "public/images/orange-elements.webp",
+        "public/images/p1.png",
+        "public/images/p2.png",
+        "public/images/p3.png",
+        "public/images/p4.png",
+        "public/images/p5.png",
+        "public/images/p6.png",
+        "public/images/p7.png",
+        "public/images/play.svg",
+        "public/images/red-bg.svg",
+        "public/images/red-drink.webp",
+        "public/images/red-elements.webp",
+        "public/images/slider-dip.png",
+        "public/images/static-img.png",
+        "public/images/tiktok.svg",
+        "public/images/video-img.webp",
+        "public/images/white-bg.svg",
+        "public/images/white-drink.webp",
+        "public/images/white-elements.webp",
+        "public/images/yt.svg",
+        "public/videos/f1.mp4",
+        "public/videos/f2.mp4",
+        "public/videos/f3.mp4",
+        "public/videos/f4.mp4",
+        "public/videos/f5.mp4",
+        "public/videos/f6.mp4",
+        "public/videos/f7.mp4",
+        "public/videos/hero-bg.mp4",
+        "public/videos/pin-video.mp4",
+        "public/videos/splash.mp4",
+        "src/assets/react.svg"
       ]
     },
     {
-      "name": "App Component",
-      "description": "The main application component",
+      "name": "Nutrition Section",
+      "description": "Displays nutrient information with responsive layout and GSAP split\u2011text effects.",
       "complexity": "M",
       "dependencies": [
-        "Project Setup & Configuration",
-        "Frontend Build Configuration"
+        "Core App Shell & Entry",
+        "Constants & Data",
+        "Global Styles & Typography"
       ],
       "files_involved": [
-        "frontend/src/App.tsx",
-        "frontend/src/index.css"
+        "src/sections/NutritionSection.jsx"
       ]
     },
     {
-      "name": "Theme Management",
-      "description": "Management of application themes",
+      "name": "Benefits & Testimonials",
+      "description": "Sections that showcase product benefits and customer testimonials.",
+      "complexity": "M",
+      "dependencies": [
+        "Core App Shell & Entry",
+        "Global Styles & Typography"
+      ],
+      "files_involved": [
+        "src/sections/BenefitSection.jsx",
+        "src/sections/TestimonialSection.jsx"
+      ]
+    },
+    {
+      "name": "Footer & Socials",
+      "description": "Site footer containing branding, navigation links and social media icons.",
       "complexity": "S",
       "dependencies": [
-        "App Component"
+        "Core App Shell & Entry",
+        "Global Styles & Typography"
       ],
       "files_involved": [
-        "frontend/src/components/ThemeProvider.tsx"
+        "src/sections/FooterSection.jsx"
       ]
     },
     {
-      "name": "Edit Item Component",
-      "description": "Component for editing items",
-      "complexity": "L",
-      "dependencies": [
-        "App Component",
-        "Theme Management"
-      ],
+      "name": "Constants & Data",
+      "description": "Centralized static data such as flavor lists, nutrient lists and other configuration objects.",
+      "complexity": "XS",
+      "dependencies": [],
       "files_involved": [
-        "frontend/src/components/EditItem/DuplicatesList.tsx",
-        "frontend/src/components/EditItem/EditItemDialog.tsx",
-        "frontend/src/components/EditItem/EditItemForm.tsx",
-        "frontend/src/components/EditItem/TagPath.tsx",
-        "frontend/src/components/EditItem/TagSelect.tsx"
-      ]
-    },
-    {
-      "name": "Settings Component",
-      "description": "Component for application settings",
-      "complexity": "L",
-      "dependencies": [
-        "App Component",
-        "Theme Management"
-      ],
-      "files_involved": [
-        "frontend/src/components/Settings/SettingsAbout.tsx",
-        "frontend/src/components/Settings/SettingsDialog.tsx",
-        "frontend/src/components/Settings/SettingsImport.tsx",
-        "frontend/src/components/Settings/Auth/UserCreate.tsx",
-        "frontend/src/components/Settings/Auth/UserPasswordEdit.tsx",
-        "frontend/src/components/Settings/Auth/UserUsernameEdit.tsx"
-      ]
-    },
-    {
-      "name": "Integrations Component",
-      "description": "Component for application integrations",
-      "complexity": "M",
-      "dependencies": [
-        "Settings Component"
-      ],
-      "files_involved": [
-        "frontend/src/components/Settings/Integrations/AppleShortcut.tsx",
-        "frontend/src/components/Settings/Integrations/Bookmarklet.tsx",
-        "frontend/src/components/Settings/Integrations/InstallApp.tsx"
-      ]
-    },
-    {
-      "name": "Sidebar Component",
-      "description": "Component for the application sidebar",
-      "complexity": "M",
-      "dependencies": [
-        "App Component"
-      ],
-      "files_involved": [
-        "frontend/src/components/Sidebar/AppSidebar.tsx",
-        "frontend/src/components/Sidebar/DeleteTagDialog.tsx",
-        "frontend/src/components/Sidebar/NavMain.tsx",
-        "frontend/src/components/Sidebar/NavTags.tsx",
-        "frontend/src/components/Sidebar/NavUser.tsx"
-      ]
-    },
-    {
-      "name": "Sidebar",
-      "description": "Sidebar component and related functionality",
-      "complexity": "M",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "frontend/src/components/Sidebar/SettingsButton.tsx",
-        "frontend/src/components/Sidebar/SidebarTag.tsx",
-        "frontend/src/components/Sidebar/SidebarToggler.tsx",
-        "frontend/src/components/Sidebar/ThemeToggler.tsx"
-      ]
-    },
-    {
-      "name": "Table",
-      "description": "Table component and related functionality",
-      "complexity": "L",
-      "dependencies": [
-        "Project Setup & Configuration",
-        "Sidebar"
-      ],
-      "files_involved": [
-        "frontend/src/components/Table/FieldFormatters.tsx",
-        "frontend/src/components/Table/Controls/BulkActionControls.tsx",
-        "frontend/src/components/Table/Controls/DeleteDialog.tsx",
-        "frontend/src/components/Table/Controls/Pagination.tsx",
-        "frontend/src/components/Table/Controls/Search.tsx",
-        "frontend/src/components/Table/Controls/Sorter.tsx",
-        "frontend/src/components/Table/Controls/TagSelect.tsx",
-        "frontend/src/components/Table/Fields/ItemActions.tsx",
-        "frontend/src/components/Table/Fields/PreviewImage.tsx",
-        "frontend/src/components/Table/Fields/TagBadge.tsx",
-        "frontend/src/components/Table/Layouts/ListLayout.tsx",
-        "frontend/src/components/Table/Layouts/TableLayout.tsx"
-      ]
-    },
-    {
-      "name": "UI Components",
-      "description": "Reusable UI components",
-      "complexity": "XL",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "frontend/src/components/ui/badge.tsx",
-        "frontend/src/components/ui/command.tsx",
-        "frontend/src/components/ui/sidebar.tsx",
-        "frontend/src/components/ui/alert-dialog.tsx",
-        "frontend/src/components/ui/sheet.tsx",
-        "frontend/src/components/ui/resizable.tsx",
-        "frontend/src/components/ui/popover.tsx",
-        "frontend/src/components/ui/avatar.tsx",
-        "frontend/src/components/ui/alert.tsx",
-        "frontend/src/components/ui/breadcrumb.tsx",
-        "frontend/src/components/ui/field.tsx",
-        "frontend/src/components/ui/table.tsx",
-        "frontend/src/components/ui/spinner.tsx",
-        "frontend/src/components/ui/toggle.tsx",
-        "frontend/src/components/ui/dialog.tsx",
-        "frontend/src/components/ui/textarea.tsx",
-        "frontend/src/components/ui/drawer.tsx",
-        "frontend/src/components/ui/scroll-area.tsx",
-        "frontend/src/components/ui/sonner.tsx",
-        "frontend/src/components/ui/input-group.tsx",
-        "frontend/src/components/ui/dropdown-menu.tsx",
-        "frontend/src/components/ui/button.tsx",
-        "frontend/src/components/ui/card.tsx",
-        "frontend/src/components/ui/form.tsx",
-        "frontend/src/components/ui/item.tsx",
-        "frontend/src/components/ui/select.tsx",
-        "frontend/src/components/ui/toggle-group.tsx",
-        "frontend/src/components/ui/tooltip.tsx",
-        "frontend/src/components/ui/combobox.tsx",
-        "frontend/src/components/ui/tabs.tsx"
-      ]
-    },
-    {
-      "name": "Hooks",
-      "description": "Custom React hooks",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "frontend/src/hooks/use-install-experience.ts",
-        "frontend/src/hooks/use-mobile.ts",
-        "frontend/src/hooks/useItemListState.ts",
-        "frontend/src/hooks/useUrlState.ts"
-      ]
-    },
-    {
-      "name": "Layouts",
-      "description": "Page layouts",
-      "complexity": "M",
-      "dependencies": [
-        "UI Components",
-        "Hooks"
-      ],
-      "files_involved": [
-        "frontend/src/layouts/Auth.tsx",
-        "frontend/src/layouts/Dashboard.tsx",
-        "frontend/src/layouts/Loading.tsx",
-        "frontend/src/layouts/NotFound.tsx",
-        "frontend/src/layouts/Onboarding.tsx"
-      ]
-    },
-    {
-      "name": "Pages",
-      "description": "Individual pages",
-      "complexity": "L",
-      "dependencies": [
-        "Layouts",
-        "UI Components",
-        "Hooks"
-      ],
-      "files_involved": [
-        "frontend/src/pages/CreateItem.tsx",
-        "frontend/src/pages/EditItem.tsx",
-        "frontend/src/pages/ItemList.tsx",
-        "frontend/src/pages/Login.tsx",
-        "frontend/src/pages/Setup.tsx",
-        "frontend/src/pages/SetupAuth.tsx",
-        "frontend/src/pages/SetupImport.tsx",
-        "frontend/src/pages/SetupIntegrations.tsx"
-      ]
-    },
-    {
-      "name": "Store",
-      "description": "Application state management",
-      "complexity": "XL",
-      "dependencies": [
-        "Pages",
-        "UI Components",
-        "Hooks"
-      ],
-      "files_involved": [
-        "frontend/src/store/api.ts",
-        "frontend/src/store/mainStore.ts",
-        "frontend/src/store/preferencesStore.ts",
-        "frontend/src/store/storeContext.ts"
-      ]
-    },
-    {
-      "name": "Database Interaction",
-      "description": "Interaction with the database, including CRUD operations and query execution",
-      "complexity": "L",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "models/Item.php",
-        "models/ItemCreator.php",
-        "models/Repository.php",
-        "models/TagCreator.php",
-        "utils/BookmarkImporter.php",
-        "utils/PocketImporter.php",
-        "utils/util-functions.php"
-      ]
-    },
-    {
-      "name": "Routing and Controllers",
-      "description": "Handling of HTTP requests and responses, including routing and controller logic",
-      "complexity": "L",
-      "dependencies": [
-        "Project Setup & Configuration",
-        "Database Interaction"
-      ],
-      "files_involved": [
-        "routes.php",
-        "public/api/index.php"
-      ]
-    },
-    {
-      "name": "Utilities and Helpers",
-      "description": "Various utility functions and classes, including image processing and HTTP utilities",
-      "complexity": "M",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "utils/BookmarkImporter.php",
-        "utils/DOMParser.php",
-        "utils/Image.php",
-        "utils/PocketImporter.php",
-        "utils/safe-http-functions.php",
-        "utils/util-functions.php"
-      ]
-    },
-    {
-      "name": "Frontend and Views",
-      "description": "Rendering of HTML templates and frontend logic",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "views/layouts/primary.php",
-        "views/pages/error.php"
-      ]
-    },
-    {
-      "name": "Storage and Filesystem",
-      "description": "Interaction with the filesystem, including storage and retrieval of files",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
-      "files_involved": [
-        "storage/.gitignore"
+        "src/constants/index.js"
       ]
     }
   ]

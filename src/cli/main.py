@@ -3,8 +3,16 @@ import os
 import sys
 from pathlib import Path
 
+# Configure stdout encoding on Windows
+if sys.stdout.encoding != "utf-8":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 # Add src to python path so imports work
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+from typing import Optional
 
 from src.state.state_manager import StateManager
 from src.git.operations import GitOperations
@@ -21,10 +29,22 @@ from src.scheduler.windows_scheduler import WindowsScheduler
 from src.planner.replanner import Replanner
 from src.notification.telegram_notifier import TelegramNotifier
 
-def setup_dependencies(project_root: str, require_llm: bool = True):
+def setup_dependencies(project_root: str, require_llm: bool = True, source_dir: Optional[str] = None):
     state = StateManager(project_root)
     git = GitOperations(project_root)
-    analyzer = RepositoryAnalyzer(project_root)
+    
+    # Determine the directory to analyze:
+    # If source_dir is provided explicitly, use it.
+    # Otherwise, if project_root is "." (or current directory) and a "source" subfolder exists,
+    # analyze the "source" subfolder while keeping state in project_root.
+    if source_dir:
+        analyze_path = source_dir
+    elif (Path(project_root) / "source").is_dir() and project_root in [".", str(Path.cwd()), ""]:
+        analyze_path = str(Path(project_root) / "source")
+    else:
+        analyze_path = project_root
+
+    analyzer = RepositoryAnalyzer(analyze_path)
     scheduler = WindowsScheduler(project_root)
     selector = ReleaseSelector(state)
     notifier = TelegramNotifier()
@@ -35,7 +55,7 @@ def setup_dependencies(project_root: str, require_llm: bool = True):
         generator = RoadmapGenerator(llm, analyzer, state)
         safety = GitSafety(git, llm)
         diff_builder = DiffBuilder(git)
-        validator = ReleaseValidator(project_root)
+        validator = ReleaseValidator(analyze_path)
         replanner = Replanner(llm, analyzer, state)
         executor = ReleaseExecutor(state, git, safety, diff_builder, validator, replanner, notifier=notifier)
     else:
@@ -51,11 +71,12 @@ def cli():
 
 @cli.command()
 @click.option('--dir', default='.', help='Project directory')
-def init(dir):
+@click.option('--source', 'source_dir', default=None, help='Source directory to analyze (defaults to source/ if present)')
+def init(dir, source_dir):
     """Initializes the project and generates the roadmap."""
     click.echo("Initializing Incremental Publisher...")
     
-    state, git, generator, _, _, _ = setup_dependencies(dir)
+    state, git, generator, _, _, _ = setup_dependencies(dir, source_dir=source_dir)
     
     if not git.is_git_repo():
         click.echo("Not a git repository. Initializing git...")
@@ -145,9 +166,10 @@ def schedule(dir, time):
 
 @cli.command()
 @click.option('--dir', default='.', help='Project directory')
-def analyze(dir):
+@click.option('--source', 'source_dir', default=None, help='Source directory to analyze')
+def analyze(dir, source_dir):
     """Analyzes the repository without generating a roadmap."""
-    state, git, generator, _, _, _ = setup_dependencies(dir)
+    state, git, generator, _, _, _ = setup_dependencies(dir, source_dir=source_dir)
     if not git.is_git_repo():
         click.echo("Not a git repository.")
         return

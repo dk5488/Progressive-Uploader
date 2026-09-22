@@ -14,11 +14,11 @@ jobs:
       contents: write
 
     steps:
-      # 1. Checkout Target Repository (BookmarkVault)
-      - name: Checkout Target Repository (BookmarkVault)
+      # 1. Checkout Target Repository (ChugCraft)
+      - name: Checkout Target Repository (ChugCraft)
         uses: actions/checkout@v4
         with:
-          repository: dk5488/BookmarkVault
+          repository: dk5488/ChugCraft
           token: ${{ secrets.GH_PAT_TOKEN }}
           fetch-depth: 0
           path: target_repo
