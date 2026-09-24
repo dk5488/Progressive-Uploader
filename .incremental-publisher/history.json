@@ -9,6 +9,11 @@
       "release_id": "R2",
       "status": "PUBLISHED",
       "timestamp": "2026-09-23T07:51:23.820723"
+    },
+    {
+      "release_id": "R3",
+      "status": "PUBLISHED",
+      "timestamp": "2026-09-24T07:41:28.269533"
     }
   ]
 }
