@@ -39,6 +39,11 @@
       "release_id": "R8",
       "status": "PUBLISHED",
       "timestamp": "2026-09-28T08:49:05.708399"
+    },
+    {
+      "release_id": "R9",
+      "status": "PUBLISHED",
+      "timestamp": "2026-09-29T08:45:26.904487"
     }
   ]
 }
