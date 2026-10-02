@@ -54,6 +54,11 @@
       "release_id": "R11",
       "status": "PUBLISHED",
       "timestamp": "2026-10-01T09:08:25.236338"
+    },
+    {
+      "release_id": "R12",
+      "status": "PUBLISHED",
+      "timestamp": "2026-10-02T08:42:14.789962"
     }
   ]
 }
