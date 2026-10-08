@@ -14,11 +14,11 @@ jobs:
       contents: write
 
     steps:
-      # 1. Checkout Target Repository (ChugCraft)
-      - name: Checkout Target Repository (ChugCraft)
+      # 1. Checkout Target Repository (StreamPulse)
+      - name: Checkout Target Repository (StreamPulse)
         uses: actions/checkout@v4
         with:
-          repository: dk5488/ChugCraft
+          repository: dk5488/StreamPulse
           token: ${{ secrets.GH_PAT_TOKEN }}
           fetch-depth: 0
           path: target_repo
