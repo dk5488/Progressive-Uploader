@@ -1,7 +1,6 @@
 {
-  "status": "COMPLETED",
-  "total_releases": 28,
-  "completed_releases": 15,
-  "last_successful_release_index": 14,
-  "last_execution": "2026-10-05T09:16:37.580813"
+  "status": "IN_PROGRESS",
+  "total_releases": 9,
+  "completed_releases": 0,
+  "last_successful_release_index": -1
 }

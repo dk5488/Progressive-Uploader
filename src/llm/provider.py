@@ -40,10 +40,10 @@ class GeminiProvider(LLMProvider):
             raise ValueError("GEMINI_API_KEY is not set.")
         self.client = genai.Client(api_key=key)
         # Using flash model for higher free-tier quota
-        self.model_name = "gemini-2.0-flash" 
+        self.model_name = "gemini-2.5-flash" 
         
     # Fallback model chain — if primary model quota is exhausted, try the next
-    FALLBACK_MODELS = ["gemini-2.0-flash", "gemini-2.0-flash-lite"]
+    FALLBACK_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-3.8-flash"]
 
     def _call(self, prompt: str, schema: Optional[Any] = None) -> Dict[str, Any]:
         config = types.GenerateContentConfig(
@@ -262,8 +262,6 @@ class GroqProvider(LLMProvider):
         "openai/gpt-oss-120b",
         "openai/gpt-oss-20b",
         "qwen/qwen3.8-27b",
-        "llama-3.3-70b-versatile",
-        "llama-3.1-8b-instant",
     ]
 
     def __init__(self, api_key: Optional[str] = None):

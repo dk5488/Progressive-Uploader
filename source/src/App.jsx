@@ -1,45 +1,26 @@
-import NavBar from "./components/NavBar";
-import HeroSection from "./sections/HeroSection";
-import { ScrollSmoother, ScrollTrigger } from "gsap/all";
-import gsap from "gsap";
-import MessageSection from "./sections/MessageSection";
-import FlavorSection from "./sections/FlavorSection";
-import { useGSAP } from "@gsap/react";
-import NutritionSection from "./sections/NutritionSection";
-import BenefitSection from "./sections/BenefitSection";
-import TestimonialSection from "./sections/TestimonialSection";
-import FooterSection from "./sections/FooterSection";
+import Footer from "./components/FooterSection/Footer"
+import Hero from "./components/HeroSection/Hero"
+import Navbar from "./components/Navbar/Navbar"
+import HowItWorks from "./pages/HowItWorks"
+import KeyFeatures from "./pages/KeyFeatures"
+import PricingPlans from "./pages/PricingPlans"
+import Testimonials from "./pages/Testimonials"
 
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-
-const App = () => {
-  useGSAP(() => {
-    ScrollSmoother.create({
-      smooth: 3,
-      effects: true,
-    });
-  });
+function App() {
 
   return (
-    <main>
-      <NavBar />
-      <div id="smooth-wrapper">
-        <div id="smooth-content">
-          <HeroSection />
-          <MessageSection />
-          <FlavorSection />
-          <NutritionSection />
+    <>
+      <main className="text-sm text-neutral-300 antialiased">
+        <Navbar></Navbar>
+        <Hero></Hero>
+        <HowItWorks></HowItWorks>
+        <KeyFeatures></KeyFeatures>
+        <PricingPlans></PricingPlans>
+        <Testimonials></Testimonials>
+        <Footer></Footer>
+      </main>
+    </>
+  )
+}
 
-          <div>
-            <BenefitSection />
-            <TestimonialSection />
-          </div>
-
-          <FooterSection />
-        </div>
-      </div>
-    </main>
-  );
-};
-
-export default App;
+export default App

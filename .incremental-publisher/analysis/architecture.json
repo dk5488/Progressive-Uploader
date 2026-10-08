@@ -3,5 +3,5 @@
   "framework": "React",
   "build_system": "Vite",
   "architecture_type": "SPA",
-  "description": "A React single-page application built with Vite, using JavaScript and organized into components, sections, and assets, following a component\u2011based SPA architecture."
+  "description": "A React single-page application built with Vite, using a component-based structure with pages, reusable UI components, and static assets."
 }

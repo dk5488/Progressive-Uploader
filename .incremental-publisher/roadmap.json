@@ -3,307 +3,170 @@
     {
       "release_id": "R1",
       "feature": "Project Setup & Configuration",
-      "description": "Root configuration, build scripts, package manifests, documentation and basic HTML entry point.",
+      "description": "Root configuration files, build scripts, package manifests, documentation, and linting setup.",
       "complexity": "XS",
       "dependencies": [],
       "files_involved": [
         ".gitignore",
         "eslint.config.js",
-        "index.html",
-        "package-lock.json",
         "package.json",
+        "package-lock.json",
         "README.md",
         "vite.config.js"
       ],
       "validation_requirements": [
-        "Run linting",
-        "Verify build scripts execute"
+        "Run npm install and ensure no errors",
+        "Execute linting to confirm configuration loads"
       ]
     },
     {
       "release_id": "R2",
       "feature": "Global Styles & Typography",
-      "description": "Tailwind CSS import, custom font-face, CSS variables and global typography definitions.",
+      "description": "Tailwind and custom CSS files that define the visual language, typography, and base styling for the app.",
       "complexity": "S",
       "dependencies": [
         "Project Setup & Configuration"
       ],
       "files_involved": [
-        "src/index.css",
-        "public/fonts/ProximaNova-Regular.otf"
+        "src/App.css",
+        "src/index.css"
       ],
       "validation_requirements": [
-        "Check CSS compiles",
-        "Verify font loads"
+        "Check that CSS builds without warnings",
+        "Verify typography appears correctly in the browser"
       ]
     },
     {
       "release_id": "R3",
-      "feature": "Constants & Data",
-      "description": "Centralized static data such as flavor lists, nutrient lists and other configuration objects.",
-      "complexity": "XS",
+      "feature": "Constants & Assets Management",
+      "description": "Centralized export of image assets and logos used throughout the UI.",
+      "complexity": "S",
       "dependencies": [],
       "files_involved": [
-        "src/constants/index.js"
+        "src/constants/index.jsx"
       ],
       "validation_requirements": [
-        "Run unit tests on data structures"
+        "Import constants in a test component to ensure paths resolve"
       ]
     },
     {
       "release_id": "R4",
-      "feature": "Product Media Assets",
-      "description": "All static image, video and icon assets used throughout the site.",
-      "complexity": "XS",
-      "dependencies": [],
+      "feature": "Core App Shell & Entry",
+      "description": "Main entry point, root React component and HTML scaffold that bootstraps the SPA.",
+      "complexity": "M",
+      "dependencies": [
+        "Project Setup & Configuration",
+        "Global Styles & Typography"
+      ],
       "files_involved": [
-        "public/favicon.ico",
-        "public/vite.svg",
-        "public/images/arrow.svg",
-        "public/images/big-img.png",
-        "public/images/black-bg.svg",
-        "public/images/black-drink.webp",
-        "public/images/black-elements.webp",
-        "public/images/blue-bg.svg",
-        "public/images/blue-drink.webp",
-        "public/images/blue-elements.webp",
-        "public/images/brown-bg.svg",
-        "public/images/brown-drink.webp",
-        "public/images/brown-elements.webp",
-        "public/images/circle-text.svg",
-        "public/images/Final.png",
-        "public/images/footer-dip.png",
-        "public/images/footer-drink.png",
-        "public/images/hero-bg.png",
-        "public/images/hero-img.png",
-        "public/images/insta.svg",
-        "public/images/logo.png",
-        "public/images/nav-logo.svg",
-        "public/images/orange-bg.svg",
-        "public/images/orange-drink.webp",
-        "public/images/orange-elements.webp",
-        "public/images/p1.png",
-        "public/images/p2.png",
-        "public/images/p3.png",
-        "public/images/p4.png",
-        "public/images/p5.png",
-        "public/images/p6.png",
-        "public/images/p7.png",
-        "public/images/play.svg",
-        "public/images/red-bg.svg",
-        "public/images/red-drink.webp",
-        "public/images/red-elements.webp",
-        "public/images/slider-dip.png",
-        "public/images/static-img.png",
-        "public/images/tiktok.svg",
-        "public/images/video-img.webp",
-        "public/images/white-bg.svg",
-        "public/images/white-drink.webp",
-        "public/images/white-elements.webp",
-        "public/images/yt.svg",
-        "public/videos/f1.mp4",
-        "public/videos/f2.mp4",
-        "public/videos/f3.mp4",
-        "public/videos/f4.mp4",
-        "public/videos/f5.mp4",
-        "public/videos/f6.mp4",
-        "public/videos/f7.mp4",
-        "public/videos/hero-bg.mp4",
-        "public/videos/pin-video.mp4",
-        "public/videos/splash.mp4",
-        "src/assets/react.svg"
+        "index.html",
+        "src/main.jsx",
+        "src/App.jsx"
       ],
       "validation_requirements": [
-        "Verify all assets are reachable",
-        "Check image dimensions"
+        "Run dev server and confirm the app renders without errors"
       ]
     },
     {
       "release_id": "R5",
-      "feature": "Core App Shell & Navigation",
-      "description": "Main React entry point, root component mounting, high\u2011level layout composition and top navigation bar component.",
-      "complexity": "M",
+      "feature": "Navigation & Header",
+      "description": "Top navigation bar component providing site navigation and branding.",
+      "complexity": "S",
       "dependencies": [
-        "Project Setup & Configuration",
-        "Global Styles & Typography",
-        "Constants & Data"
+        "Core App Shell & Entry"
       ],
       "files_involved": [
-        "src/main.jsx",
-        "src/App.jsx",
-        "src/components/NavBar.jsx"
+        "src/components/Navbar/Navbar.jsx"
       ],
       "validation_requirements": [
-        "Run integration tests",
-        "Check that NavBar renders"
+        "Render Navbar in the app and verify links are present"
       ]
     },
     {
       "release_id": "R6",
-      "feature": "Hero Section",
-      "description": "Landing hero with animated title, responsive media queries and background video handling.",
-      "complexity": "XS",
+      "feature": "Footer Section",
+      "description": "Site footer containing links, social icons and copyright information.",
+      "complexity": "S",
       "dependencies": [
-        "Core App Shell & Navigation",
-        "Global Styles & Typography"
+        "Core App Shell & Entry"
       ],
       "files_involved": [
-        "src/sections/HeroSection.jsx"
+        "src/components/FooterSection/Footer.jsx"
       ],
       "validation_requirements": [
-        "Visual test of hero animation",
-        "Verify video loads"
+        "Render Footer and check that all sections display correctly"
       ]
     },
     {
       "release_id": "R7",
-      "feature": "Brand Message Section",
-      "description": "Section presenting brand messages with split\u2011text animations.",
+      "feature": "Hero Section",
+      "description": "Prominent hero component with headline, call\u2011to\u2011action and animated visuals.",
       "complexity": "M",
       "dependencies": [
-        "Core App Shell & Navigation",
-        "Global Styles & Typography"
+        "Core App Shell & Entry",
+        "Constants & Assets Management"
       ],
       "files_involved": [
-        "src/sections/MessageSection.jsx"
+        "src/components/HeroSection/Hero.jsx"
       ],
       "validation_requirements": [
-        "Check split\u2011text animation",
-        "Validate responsive layout"
+        "Display Hero on the homepage and verify image assets load"
       ]
     },
     {
       "release_id": "R8",
-      "feature": "ClipPath Title Animation",
-      "description": "Component that displays title animations using GSAP clip\u2011path.",
-      "complexity": "XS",
+      "feature": "Pages & Content",
+      "description": "Individual page components that render the main content sections such as How It Works, Key Features, Pricing, and Testimonials.",
+      "complexity": "M",
       "dependencies": [
-        "Core App Shell & Navigation",
-        "Global Styles & Typography"
+        "Core App Shell & Entry",
+        "Constants & Assets Management",
+        "Navigation & Header"
       ],
       "files_involved": [
-        "src/components/ClipPathTitle.jsx"
+        "src/pages/HowItWorks.jsx",
+        "src/pages/KeyFeatures.jsx",
+        "src/pages/PricingPlans.jsx",
+        "src/pages/Testimonials.jsx"
       ],
       "validation_requirements": [
-        "Run GSAP animation test"
+        "Navigate to each page and confirm content renders without errors"
       ]
     },
     {
       "release_id": "R9",
-      "feature": "Video Pin Section",
-      "description": "Component that displays video pins with GSAP interactions.",
+      "feature": "Static Assets",
+      "description": "All image and media files used by components and pages, stored in the assets folder and public directory.",
       "complexity": "XS",
       "dependencies": [
-        "Core App Shell & Navigation",
-        "Global Styles & Typography"
+        "Constants & Assets Management",
+        "Hero Section",
+        "Pages & Content"
       ],
       "files_involved": [
-        "src/components/VideoPinSection.jsx"
+        "public/vite.svg",
+        "src/assets/audience.jpeg",
+        "src/assets/automation.jpeg",
+        "src/assets/broadcastly-logo.png",
+        "src/assets/chart.png",
+        "src/assets/cloudcast-logo.png",
+        "src/assets/hero.jpg",
+        "src/assets/livestreamer-logo.png",
+        "src/assets/logo.png",
+        "src/assets/monetize.jpeg",
+        "src/assets/optimize.jpeg",
+        "src/assets/react.svg",
+        "src/assets/streamer.jpeg",
+        "src/assets/streamlabs-logo.png",
+        "src/assets/user1.jpeg",
+        "src/assets/user2.jpeg",
+        "src/assets/user3.jpeg",
+        "src/assets/user4.jpeg",
+        "src/assets/user5.jpeg",
+        "src/assets/user6.jpeg"
       ],
       "validation_requirements": [
-        "Verify video playback on pin click"
-      ]
-    },
-    {
-      "release_id": "R10",
-      "feature": "Flavor Slider Component",
-      "description": "Horizontal flavor carousel with scroll\u2011triggered GSAP animations.",
-      "complexity": "XS",
-      "dependencies": [
-        "Core App Shell & Navigation",
-        "Constants & Data",
-        "Global Styles & Typography"
-      ],
-      "files_involved": [
-        "src/components/FlavorSlider.jsx"
-      ],
-      "validation_requirements": [
-        "Test carousel scroll behavior"
-      ]
-    },
-    {
-      "release_id": "R11",
-      "feature": "Flavor Title Component",
-      "description": "Title component used within the flavor showcase.",
-      "complexity": "XS",
-      "dependencies": [
-        "Flavor Slider Component"
-      ],
-      "files_involved": [
-        "src/components/FlavorTitle.jsx"
-      ],
-      "validation_requirements": [
-        "Check title renders correctly"
-      ]
-    },
-    {
-      "release_id": "R12",
-      "feature": "Flavor Section",
-      "description": "Section that integrates the flavor slider and title into the page layout.",
-      "complexity": "XS",
-      "dependencies": [
-        "Core App Shell & Navigation",
-        "Constants & Data",
-        "Global Styles & Typography"
-      ],
-      "files_involved": [
-        "src/sections/FlavorSection.jsx"
-      ],
-      "validation_requirements": [
-        "Validate section layout"
-      ]
-    },
-    {
-      "release_id": "R13",
-      "feature": "Nutrition Section",
-      "description": "Displays nutrient information with responsive layout and GSAP split\u2011text effects.",
-      "complexity": "M",
-      "dependencies": [
-        "Core App Shell & Navigation",
-        "Constants & Data",
-        "Global Styles & Typography"
-      ],
-      "files_involved": [
-        "src/sections/NutritionSection.jsx"
-      ],
-      "validation_requirements": [
-        "Check nutrient data rendering",
-        "Test split\u2011text animation"
-      ]
-    },
-    {
-      "release_id": "R14",
-      "feature": "Benefits & Testimonials",
-      "description": "Sections that showcase product benefits and customer testimonials.",
-      "complexity": "M",
-      "dependencies": [
-        "Core App Shell & Navigation",
-        "Global Styles & Typography"
-      ],
-      "files_involved": [
-        "src/sections/BenefitSection.jsx",
-        "src/sections/TestimonialSection.jsx"
-      ],
-      "validation_requirements": [
-        "Verify benefit cards display",
-        "Check testimonial carousel"
-      ]
-    },
-    {
-      "release_id": "R15",
-      "feature": "Footer & Socials",
-      "description": "Site footer containing branding, navigation links and social media icons.",
-      "complexity": "S",
-      "dependencies": [
-        "Core App Shell & Navigation",
-        "Global Styles & Typography"
-      ],
-      "files_involved": [
-        "src/sections/FooterSection.jsx"
-      ],
-      "validation_requirements": [
-        "Check footer links",
-        "Validate social icons load"
+        "Verify each image loads correctly in its respective component"
       ]
     }
   ]
