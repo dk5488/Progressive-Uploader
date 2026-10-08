@@ -16,12 +16,28 @@ jobs:
     steps:
       # 1. Checkout Target Repository (StreamPulse)
       - name: Checkout Target Repository (StreamPulse)
+        id: checkout_target
+        continue-on-error: true
         uses: actions/checkout@v4
         with:
           repository: dk5488/StreamPulse
           token: ${{ secrets.GH_PAT_TOKEN }}
           fetch-depth: 0
           path: target_repo
+
+      # Handle brand new empty repository (no initial commit yet)
+      - name: Initialize Target Repository if Empty
+        if: steps.checkout_target.outcome != 'success'
+        run: |
+          mkdir -p target_repo
+          cd target_repo
+          if [ ! -d ".git" ]; then
+            git init -b main
+          else
+            git checkout -B main 2>/dev/null || git checkout --orphan main 2>/dev/null || true
+          fi
+          git remote remove origin 2>/dev/null || true
+          git remote add origin https://x-access-token:${{ secrets.GH_PAT_TOKEN }}@github.com/dk5488/StreamPulse.git
 
       # 2. Checkout Private Uploader Engine
       - name: Checkout Progressive Uploader Engine
