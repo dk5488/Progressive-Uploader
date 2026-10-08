@@ -27,4 +27,9 @@ class ReleaseSelector:
         project_state = self.state.load_state()
         if project_state.get("status") == "COMPLETED":
             return True
+        roadmap = self.state.load_roadmap() or {}
+        releases = roadmap.get("releases", [])
+        if releases and project_state.get("completed_releases", 0) >= len(releases):
+            return True
         return False
+

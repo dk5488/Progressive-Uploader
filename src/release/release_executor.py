@@ -224,9 +224,13 @@ class ReleaseExecutor:
         project_state['completed_releases'] = idx + 1
         project_state['last_execution'] = datetime.datetime.now().isoformat()
         
-        roadmap = self.state.load_roadmap()
-        if project_state['completed_releases'] >= len(roadmap.get('releases', [])):
+        roadmap = self.state.load_roadmap() or {}
+        releases = roadmap.get('releases', [])
+        if releases and project_state['completed_releases'] >= len(releases):
             project_state['status'] = "COMPLETED"
+            project_state['total_releases'] = project_state['completed_releases']
+        elif releases:
+            project_state['total_releases'] = len(releases)
             
         self.state.save_state(project_state)
         
@@ -250,9 +254,13 @@ class ReleaseExecutor:
         project_state['completed_releases'] = idx + 1
         project_state['last_execution'] = datetime.datetime.now().isoformat()
         
-        roadmap = self.state.load_roadmap()
-        if project_state['completed_releases'] >= len(roadmap.get('releases', [])):
+        roadmap = self.state.load_roadmap() or {}
+        releases = roadmap.get('releases', [])
+        if releases and project_state['completed_releases'] >= len(releases):
             project_state['status'] = "COMPLETED"
+            project_state['total_releases'] = project_state['completed_releases']
+        elif releases:
+            project_state['total_releases'] = len(releases)
             
         self.state.save_state(project_state)
         

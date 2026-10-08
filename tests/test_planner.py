@@ -219,3 +219,95 @@ def test_roadmap_generator_deduplicates_llm_output():
     assert roadmap[0]["files_involved"] == ["fileA.py", "fileB.py"]
     assert roadmap[1]["files_involved"] == []
 
+def test_replanner_skips_when_all_files_covered():
+    """Replanner should NOT invoke LLM when all repository files are already planned and pending releases exist."""
+    llm = Mock()
+    analyzer = Mock()
+    state = Mock()
+    
+    state.load_state.return_value = {
+        "status": "IN_PROGRESS",
+        "completed_releases": 1,
+        "total_releases": 10  # Drifted total
+    }
+    state.load_roadmap.return_value = {
+        "releases": [
+            {"files_involved": ["fileA.py"]},
+            {"files_involved": ["fileB.py"]}
+        ]
+    }
+    analyzer.get_all_files.return_value = ["fileA.py", "fileB.py"]
+    
+    replanner = Replanner(llm, analyzer, state)
+    replanner.replan_if_needed()
+    
+    # LLM must not be called
+    llm.analyze_repository.assert_not_called()
+    # State should synchronize total_releases to 2
+    saved_state = state.save_state.call_args[0][0]
+    assert saved_state["total_releases"] == 2
+
+def test_replanner_completes_when_all_files_published():
+    """Replanner marks project COMPLETED when all repo files have already been published."""
+    llm = Mock()
+    analyzer = Mock()
+    state = Mock()
+    
+    state.load_state.return_value = {
+        "status": "IN_PROGRESS",
+        "completed_releases": 2,
+        "total_releases": 5
+    }
+    state.load_roadmap.return_value = {
+        "releases": [
+            {"files_involved": ["fileA.py"]},
+            {"files_involved": ["fileB.py"]}
+        ]
+    }
+    analyzer.get_all_files.return_value = ["fileA.py", "fileB.py"]
+    
+    replanner = Replanner(llm, analyzer, state)
+    replanner.replan_if_needed()
+    
+    llm.analyze_repository.assert_not_called()
+    saved_state = state.save_state.call_args[0][0]
+    assert saved_state["status"] == "COMPLETED"
+    assert saved_state["total_releases"] == 2
+
+def test_replanner_detects_new_uncovered_files():
+    """Replanner triggers LLM analysis when new uncovered files are added to repository."""
+    llm = Mock()
+    analyzer = Mock()
+    state = Mock()
+    
+    state.load_state.return_value = {
+        "status": "IN_PROGRESS",
+        "completed_releases": 1,
+        "total_releases": 2
+    }
+    state.load_roadmap.return_value = {
+        "releases": [
+            {"files_involved": ["fileA.py"]},
+            {"files_involved": ["fileB.py"]}
+        ]
+    }
+    # fileC.py is newly added to repository
+    analyzer.get_all_files.return_value = ["fileA.py", "fileB.py", "fileC.py"]
+    analyzer.get_file_tree.return_value = "tree"
+    analyzer.get_file_contents_for_files.return_value = {"fileB.py": "b", "fileC.py": "c"}
+    
+    llm.analyze_repository.return_value = {"architecture_type": "Modular"}
+    llm.identify_features.return_value = {"features": [{"name": "New"}]}
+    llm.generate_roadmap.return_value = [
+        {"release_id": 2, "feature": "New", "files_involved": ["fileB.py", "fileC.py"]}
+    ]
+    
+    replanner = Replanner(llm, analyzer, state)
+    replanner.replan_if_needed()
+    
+    llm.analyze_repository.assert_called_once()
+    state.save_roadmap.assert_called_once()
+    saved_state = state.save_state.call_args[0][0]
+    assert saved_state["total_releases"] == 2
+
+
