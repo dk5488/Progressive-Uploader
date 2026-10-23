@@ -16,7 +16,7 @@ if sys.stdout.encoding != "utf-8":
 # will be processed in chunks to avoid exceeding LLM token limits.
 BATCH_THRESHOLD = 100
 # Max files per batch when doing batched feature identification
-MAX_FILES_PER_BATCH = 50
+MAX_FILES_PER_BATCH = 25
 
 
 class RoadmapGenerator:

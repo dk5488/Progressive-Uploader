@@ -1,7 +1,7 @@
 {
-  "language": "JavaScript",
-  "framework": "React",
-  "build_system": "Vite",
-  "architecture_type": "SPA",
-  "description": "A React single-page application built with Vite, using a component-based structure with pages, reusable UI components, and static assets."
+  "language": "PHP",
+  "framework": "Custom/Plain PHP",
+  "build_system": "None",
+  "architecture_type": "Monolithic procedural PHP application with REST-like API endpoints",
+  "description": "The codebase is dominated by .php files organized into folders such as api, auth, chat, functions, and lk, with occasional Python scripts and JavaScript assets. It uses the PHPMailer library for email but lacks a framework manifest (e.g., composer.json), indicating a custom or plain PHP setup. No build tool configuration is present, so deployment is likely direct to a web server. The overall design is a single monolithic application exposing various API endpoints and handling authentication, chat, and other features in a procedural style rather than a formal MVC or micro\u2011service architecture."
 }

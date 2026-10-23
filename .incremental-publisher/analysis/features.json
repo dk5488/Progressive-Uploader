@@ -1,134 +1,639 @@
 {
   "features": [
     {
+      "name": "Email Library (PHPMailer)",
+      "description": "Core PHPMailer email creation and transport classes used for sending emails.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "PHPMailer/src/DSNConfigurator.php",
+        "PHPMailer/src/Exception.php",
+        "PHPMailer/src/OAuth.php",
+        "PHPMailer/src/OAuthTokenProvider.php",
+        "PHPMailer/src/PHPMailer.php",
+        "PHPMailer/src/POP3.php",
+        "PHPMailer/src/SMTP.php"
+      ]
+    },
+    {
+      "name": "Analytics Collector (PHP)",
+      "description": "PHP drop\u2011in collector for analytics events, storing data in SQLite.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "a/collect.php"
+      ]
+    },
+    {
+      "name": "Analytics Collector (Python)",
+      "description": "Python service that serves tracker scripts, rrweb bundles, and receives analytics events.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "a/collector.py"
+      ]
+    },
+    {
+      "name": "Analytics Dashboard",
+      "description": "HTML dashboard for visualizing analytics data, styled with rrweb-player assets.",
+      "complexity": "S",
+      "dependencies": [
+        "Analytics Collector (Python)",
+        "Analytics Collector (PHP)"
+      ],
+      "files_involved": [
+        "a/dashboard.html"
+      ]
+    },
+    {
+      "name": "GeoIP Resolver",
+      "description": "Python module that resolves client IPs to country codes using local CSV datasets.",
+      "complexity": "S",
+      "dependencies": [
+        "GeoIP Data"
+      ],
+      "files_involved": [
+        "a/geo.py"
+      ]
+    },
+    {
+      "name": "GeoIP Data",
+      "description": "License\u2011free CSV datasets mapping IP ranges to country codes for IPv4 and IPv6.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "a/geo/country-ipv4.csv",
+        "a/geo/country-ipv6.csv"
+      ]
+    },
+    {
+      "name": "RRWeb Assets (CSS)",
+      "description": "Stylesheets for rrweb player and recorder UI.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "a/vendor/rrweb-player.min.css",
+        "a/vendor/rrweb.min.css"
+      ]
+    },
+    {
+      "name": "RRWeb Assets (JS)",
+      "description": "JavaScript bundles for rrweb recorder and player functionality.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "a/vendor/rrweb-player.min.js",
+        "a/vendor/rrweb.min.js"
+      ]
+    },
+    {
+      "name": "Analytics Tracker (JS)",
+      "description": "Client\u2011side tracker script that sends events to the collector and uses rrweb for session recording.",
+      "complexity": "S",
+      "dependencies": [
+        "RRWeb Assets (JS)",
+        "RRWeb Assets (CSS)"
+      ],
+      "files_involved": [
+        "a/tracker.js"
+      ]
+    },
+    {
+      "name": "Authentication & OAuth",
+      "description": "Handles user authentication via Google, generic verification, and Twitter OAuth.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/auth_google.php",
+        "api/auth_verify.php",
+        "api/auth_x.php"
+      ]
+    },
+    {
+      "name": "Bandit & Analytics",
+      "description": "Aggregates visitor metrics, tracks download clicks, and provides analytics endpoints.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/bandit.php",
+        "api/dl_track.php"
+      ]
+    },
+    {
+      "name": "Billing & Promo",
+      "description": "Manages purchase leads, billing requests, and promo code redemption for accounts.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/billing_request.php",
+        "api/promo_redeem.php"
+      ]
+    },
+    {
+      "name": "Desktop Download & Email",
+      "description": "Provides download links for desktop installers, email link requests, key validation, status checks, and update retrieval.",
+      "complexity": "L",
+      "dependencies": [],
+      "files_involved": [
+        "api/desktop_download.php",
+        "api/desktop_email_link.php",
+        "api/desktop_status.php",
+        "api/download_update.php",
+        "api/validate_key.php"
+      ]
+    },
+    {
+      "name": "Generation & Venice AI",
+      "description": "Handles image/video generation requests via Venice AI, tracks status, and provides client wrapper.",
+      "complexity": "L",
+      "dependencies": [],
+      "files_involved": [
+        "api/generate_request.php",
+        "api/generation_status.php",
+        "api/venice_client.php"
+      ]
+    },
+    {
+      "name": "Lost & Verify (User Account)",
+      "description": "Password reset and email verification flows for logged-in users.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/lk_resend_login.php",
+        "api/lk_verify_email.php"
+      ]
+    },
+    {
+      "name": "Support & Chat",
+      "description": "Polls support chat history and handles Telegram webhook for support replies.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/support_poll.php",
+        "api/support_tg_8f191f6814a14d11099d9a7a.php"
+      ]
+    },
+    {
+      "name": "Waitlist & Notifications",
+      "description": "Manages waitlist signups, sends notifications via Telegram, and handles anti-bot power-of-two checks.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/waitlist.php",
+        "api/nv_notify.php",
+        "api/nv_pow.php"
+      ]
+    },
+    {
+      "name": "Trial Activation",
+      "description": "Soft anti-bot gate for trial activation, email code verification.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "api/p3_trial.php"
+      ]
+    },
+    {
+      "name": "App Configuration",
+      "description": "Holds application configuration data.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "api/app_config.json"
+      ]
+    },
+    {
+      "name": "OAuth Authentication",
+      "description": "Handles OAuth 2.0 authentication flows for Google and Twitter, including redirects, callbacks, and session management.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "auth/google/callback.php",
+        "auth/google/redirect.php",
+        "auth/twitter/callback.php",
+        "auth/twitter/config.php",
+        "auth/twitter/redirect.php"
+      ]
+    },
+    {
+      "name": "Chat API",
+      "description": "Provides AI-powered chat support via xAI, with Telegram integration and rate limiting.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "chat/chat_api.php"
+      ]
+    },
+    {
+      "name": "Resume Upload API",
+      "description": "Endpoint for uploading resumes, storing them, and returning public URLs.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "chat/upload_resume.php"
+      ]
+    },
+    {
+      "name": "Batch Email Sending",
+      "description": "Sends bulk emails to campaign targets using environment variables and templates.",
+      "complexity": "L",
+      "dependencies": [],
+      "files_involved": [
+        "data/batch_send.php"
+      ]
+    },
+    {
+      "name": "iOS Email Sending",
+      "description": "Sends iOS-specific email campaigns with custom templates.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "data/ios_send.php"
+      ]
+    },
+    {
+      "name": "Campaign Email Sending",
+      "description": "Handles campaign email dispatch to registered users.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "data/send_campaign.php"
+      ]
+    },
+    {
+      "name": "Restored Service Notification",
+      "description": "Broadcasts service restoration notifications to all registered users.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "data/restored_send.php"
+      ]
+    },
+    {
+      "name": "Expiration Reminder",
+      "description": "Sends reminders to users whose bonus credits are about to expire.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "data/expire_reminder.php"
+      ]
+    },
+    {
+      "name": "Expiration Bonus",
+      "description": "Handles expiration of bonus credits and related notifications.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "data/expire_bonus.php"
+      ]
+    },
+    {
+      "name": "Desktop Links Data",
+      "description": "JSON file containing desktop link mappings.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "data/desktop_links.json"
+      ]
+    },
+    {
+      "name": "Desktop Release Data",
+      "description": "JSON file containing desktop release information.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "data/desktop_release.json"
+      ]
+    },
+    {
+      "name": "Pinterest CAPI Example",
+      "description": "Example configuration for Pinterest CAPI integration.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "data/pinterest_capi.php.example"
+      ]
+    },
+    {
+      "name": "Reddit CAPI",
+      "description": "Configuration for Reddit CAPI integration.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "data/reddit_capi.php"
+      ]
+    },
+    {
+      "name": "Auth Core",
+      "description": "Core authentication logic, session handling, and database interactions for user accounts.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "functions/auth_db.php",
+        "functions/auth_flow_state.php",
+        "functions/flow_oauth.php"
+      ]
+    },
+    {
+      "name": "Auth Password Flow",
+      "description": "Endpoints for changing and setting user passwords.",
+      "complexity": "S",
+      "dependencies": [
+        "Auth Core"
+      ],
+      "files_involved": [
+        "functions/auth_change_password.php",
+        "functions/auth_set_password.php"
+      ]
+    },
+    {
+      "name": "Auth Registration Flow",
+      "description": "Multi\u2011step user registration, including email code verification and Google OAuth completion.",
+      "complexity": "L",
+      "dependencies": [
+        "Auth Core",
+        "Email Verification Codes"
+      ],
+      "files_involved": [
+        "functions/auth_register.php",
+        "functions/auth_send_code.php",
+        "functions/auth_verify_code.php",
+        "functions/auth_google_finish.php"
+      ]
+    },
+    {
+      "name": "Email Verification Codes",
+      "description": "Generation, storage, and validation of short\u2011lived email verification codes.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/email_codes.php"
+      ]
+    },
+    {
+      "name": "Captcha & Security",
+      "description": "Human verification mechanisms: hCaptcha integration, invisible proof\u2011of\u2011work, and client IP resolution.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "functions/captcha.php",
+        "functions/nv_pow.php",
+        "functions/nv_client_ip.php"
+      ]
+    },
+    {
+      "name": "Lead Capture & Alerts",
+      "description": "Endpoints for collecting leads, career applications, and sending Telegram alerts with contextual data.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "functions/lead.php",
+        "functions/careers_apply.php",
+        "functions/nv_alert_ctx.php",
+        "functions/phone_verify.php"
+      ]
+    },
+    {
+      "name": "Desktop Release & Download",
+      "description": "Helpers for providing desktop app download links and tracking download counts.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/desktop_release.php",
+        "functions/get_download_link.php"
+      ]
+    },
+    {
+      "name": "External Conversion APIs",
+      "description": "Server\u2011side conversion tracking for Pinterest and Reddit pixels.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/pinterest_capi.php",
+        "functions/reddit_capi.php"
+      ]
+    },
+    {
+      "name": "Demo & Hello Endpoints",
+      "description": "Simple demo and hello endpoints that return JSON responses and use PHPMailer.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "functions/demo.php",
+        "functions/hello.php"
+      ]
+    },
+    {
+      "name": "Misc Utilities",
+      "description": "Utility scripts for Google Ads conversion tracking on static flow pages.",
+      "complexity": "XS",
+      "dependencies": [
+        "Auth Core"
+      ],
+      "files_involved": [
+        "functions/flow_px.php"
+      ]
+    },
+    {
+      "name": "Review Moderation & API",
+      "description": "Handles review submission, listing, and admin moderation via JSON endpoints.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "functions/reviews.php"
+      ]
+    },
+    {
+      "name": "SMS OTP Provider",
+      "description": "Generates and verifies OTP codes, sending via configured SMS provider APIs.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/sms_provider.php"
+      ]
+    },
+    {
+      "name": "Support Chat & Telegram Integration",
+      "description": "Facilitates support chat between users and owner via Telegram bot, including translation pipelines.",
+      "complexity": "L",
+      "dependencies": [],
+      "files_involved": [
+        "functions/support_lib.php"
+      ]
+    },
+    {
+      "name": "Twitter Ads Click ID Capture",
+      "description": "Captures first\u2011touch Twitter Ads click IDs into cookies for later use.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/twclid_capture.php"
+      ]
+    },
+    {
+      "name": "Waitlist Management & Notifications",
+      "description": "Manages waitlist sign\u2011ups and triggers Telegram alerts for webinar registrations.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "functions/waitlist.php"
+      ]
+    },
+    {
+      "name": "Welcome Email Service",
+      "description": "Sends transactional welcome emails using the Resend API.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/welcome_mail.php"
+      ]
+    },
+    {
+      "name": "Twitter Ads Event Tracking",
+      "description": "Tracks conversion events and forwards them to Twitter Ads API, respecting test traffic flags.",
+      "complexity": "M",
+      "dependencies": [
+        "functions/twclid_capture.php"
+      ],
+      "files_involved": [
+        "functions/x_ads_event.php"
+      ]
+    },
+    {
+      "name": "Twitter Ads Conversion API",
+      "description": "Server\u2011side purchase tracking for Twitter Ads via the Conversion API.",
+      "complexity": "L",
+      "dependencies": [
+        "functions/x_ads_event.php"
+      ],
+      "files_involved": [
+        "functions/x_capi.php"
+      ]
+    },
+    {
+      "name": "Support Cron Jobs",
+      "description": "Scheduled tasks for support system maintenance and cleanup.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/support_cron.php"
+      ]
+    },
+    {
       "name": "Project Setup & Configuration",
-      "description": "Root configuration files, build scripts, package manifests, documentation, and linting setup.",
+      "description": "Root configuration, documentation, and version\u2011control files that define the repository, server directives and licensing.",
       "complexity": "XS",
       "dependencies": [],
       "files_involved": [
+        ".gitattributes",
         ".gitignore",
-        "eslint.config.js",
-        "package.json",
-        "package-lock.json",
+        ".htaccess",
+        ".user.ini",
+        "LICENSE",
         "README.md",
-        "vite.config.js"
+        "ENGINE.md"
       ]
     },
     {
-      "name": "Global Styles & Typography",
-      "description": "Tailwind and custom CSS files that define the visual language, typography, and base styling for the app.",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
+      "name": "Authentication Flow",
+      "description": "Handles OAuth callbacks, token verification, session cookie management and logout logic for the application.",
+      "complexity": "M",
+      "dependencies": [],
       "files_involved": [
-        "src/App.css",
-        "src/index.css"
+        "auth.php",
+        "auth_callback.php",
+        "auth-callback.php",
+        "logout.php"
       ]
     },
     {
-      "name": "Core App Shell & Entry",
-      "description": "Main entry point, root React component and HTML scaffold that bootstraps the SPA.",
+      "name": "User Registration & Onboarding",
+      "description": "Pages for new\u2011user sign\u2011up, password setting after email verification and optional phone verification.",
       "complexity": "M",
       "dependencies": [
-        "Project Setup & Configuration",
-        "Global Styles & Typography"
+        "Authentication Flow"
       ],
       "files_involved": [
-        "index.html",
-        "src/main.jsx",
-        "src/App.jsx"
+        "register.php",
+        "set-password.php",
+        "verify-phone.php"
       ]
     },
     {
-      "name": "Navigation & Header",
-      "description": "Top navigation bar component providing site navigation and branding.",
-      "complexity": "S",
-      "dependencies": [
-        "Core App Shell & Entry"
-      ],
-      "files_involved": [
-        "src/components/Navbar/Navbar.jsx"
-      ]
-    },
-    {
-      "name": "Hero Section",
-      "description": "Prominent hero component with headline, call\u2011to\u2011action and animated visuals.",
-      "complexity": "M",
-      "dependencies": [
-        "Core App Shell & Entry",
-        "Constants & Assets Management"
-      ],
-      "files_involved": [
-        "src/components/HeroSection/Hero.jsx"
-      ]
-    },
-    {
-      "name": "Footer Section",
-      "description": "Site footer containing links, social icons and copyright information.",
-      "complexity": "S",
-      "dependencies": [
-        "Core App Shell & Entry"
-      ],
-      "files_involved": [
-        "src/components/FooterSection/Footer.jsx"
-      ]
-    },
-    {
-      "name": "Pages & Content",
-      "description": "Individual page components that render the main content sections such as How It Works, Key Features, Pricing, and Testimonials.",
-      "complexity": "M",
-      "dependencies": [
-        "Core App Shell & Entry",
-        "Constants & Assets Management",
-        "Navigation & Header"
-      ],
-      "files_involved": [
-        "src/pages/HowItWorks.jsx",
-        "src/pages/KeyFeatures.jsx",
-        "src/pages/PricingPlans.jsx",
-        "src/pages/Testimonials.jsx"
-      ]
-    },
-    {
-      "name": "Constants & Assets Management",
-      "description": "Centralized export of image assets and logos used throughout the UI.",
+      "name": "Prompt Assistant Integration",
+      "description": "Loads and configures the Neuravision Prompt Assistant package used by the site.",
       "complexity": "S",
       "dependencies": [],
       "files_involved": [
-        "src/constants/index.jsx"
+        "lk/pa.php"
       ]
     },
     {
-      "name": "Static Assets",
-      "description": "All image and media files used by components and pages, stored in the assets folder and public directory.",
-      "complexity": "XS",
+      "name": "LK Core Shared Logic",
+      "description": "Shared backend for the landing\u2011kit (LK) split\u2011test: authentication wrapper, download block markup, and install\u2011step assets.",
+      "complexity": "L",
       "dependencies": [
-        "Constants & Assets Management",
-        "Hero Section",
-        "Pages & Content"
+        "Authentication Flow"
       ],
       "files_involved": [
-        "public/vite.svg",
-        "src/assets/audience.jpeg",
-        "src/assets/automation.jpeg",
-        "src/assets/broadcastly-logo.png",
-        "src/assets/chart.png",
-        "src/assets/cloudcast-logo.png",
-        "src/assets/hero.jpg",
-        "src/assets/livestreamer-logo.png",
-        "src/assets/logo.png",
-        "src/assets/monetize.jpeg",
-        "src/assets/optimize.jpeg",
-        "src/assets/react.svg",
-        "src/assets/streamer.jpeg",
-        "src/assets/streamlabs-logo.png",
-        "src/assets/user1.jpeg",
-        "src/assets/user2.jpeg",
-        "src/assets/user3.jpeg",
-        "src/assets/user4.jpeg",
-        "src/assets/user5.jpeg",
-        "src/assets/user6.jpeg"
+        "lk/lk_core.php",
+        "lk/lk_dlblock.php",
+        "lk/lk_install_steps.php"
+      ]
+    },
+    {
+      "name": "LK Variant A Page",
+      "description": "Cabinet variant A (download\u2011first screen) that renders the UI for split\u2011test group A.",
+      "complexity": "S",
+      "dependencies": [
+        "LK Core Shared Logic"
+      ],
+      "files_involved": [
+        "lk/a.php"
+      ]
+    },
+    {
+      "name": "LK Variant B Page",
+      "description": "Cabinet variant B (studio screen) for split\u2011test group B, using the same core logic.",
+      "complexity": "S",
+      "dependencies": [
+        "LK Core Shared Logic"
+      ],
+      "files_involved": [
+        "lk/b.php"
+      ]
+    },
+    {
+      "name": "LK Variant C Page",
+      "description": "Cabinet variant C (one\u2011tap download screen) for split\u2011test group C, minimal UI flow.",
+      "complexity": "S",
+      "dependencies": [
+        "LK Core Shared Logic"
+      ],
+      "files_involved": [
+        "lk/c.php"
+      ]
+    },
+    {
+      "name": "LK Download Endpoint Page",
+      "description": "Handles the direct download request routing for the landing\u2011kit, delegating to API endpoints.",
+      "complexity": "S",
+      "dependencies": [
+        "LK Core Shared Logic"
+      ],
+      "files_involved": [
+        "lk/dl.php"
+      ]
+    },
+    {
+      "name": "LK Index & Navigation Page",
+      "description": "Entry point for the landing\u2011kit, routing users to the appropriate variant based on cookies or AB test logic.",
+      "complexity": "S",
+      "dependencies": [
+        "LK Core Shared Logic"
+      ],
+      "files_involved": [
+        "lk/index.php"
       ]
     }
   ]

@@ -1,172 +1,1000 @@
 {
   "releases": [
     {
-      "release_id": "R1",
+      "release_id": "R001",
       "feature": "Project Setup & Configuration",
-      "description": "Root configuration files, build scripts, package manifests, documentation, and linting setup.",
+      "description": "Initial repository setup including git attributes, ignore rules, server directives, and documentation.",
       "complexity": "XS",
       "dependencies": [],
       "files_involved": [
+        ".gitattributes",
         ".gitignore",
-        "eslint.config.js",
-        "package.json",
-        "package-lock.json",
+        ".htaccess",
+        ".user.ini",
+        "LICENSE",
         "README.md",
-        "vite.config.js"
+        "ENGINE.md"
       ],
       "validation_requirements": [
-        "Run npm install and ensure no errors",
-        "Execute linting to confirm configuration loads"
+        "Verify .gitignore excludes sensitive files",
+        "Check .htaccess syntax for valid Apache directives"
       ]
     },
     {
-      "release_id": "R2",
-      "feature": "Global Styles & Typography",
-      "description": "Tailwind and custom CSS files that define the visual language, typography, and base styling for the app.",
-      "complexity": "S",
-      "dependencies": [
-        "Project Setup & Configuration"
-      ],
+      "release_id": "R002",
+      "feature": "Email Library (PHPMailer)",
+      "description": "Core PHPMailer library classes for email creation and transport.",
+      "complexity": "M",
+      "dependencies": [],
       "files_involved": [
-        "src/App.css",
-        "src/index.css"
+        "PHPMailer/src/DSNConfigurator.php",
+        "PHPMailer/src/Exception.php",
+        "PHPMailer/src/OAuth.php",
+        "PHPMailer/src/OAuthTokenProvider.php",
+        "PHPMailer/src/PHPMailer.php",
+        "PHPMailer/src/POP3.php",
+        "PHPMailer/src/SMTP.php"
       ],
       "validation_requirements": [
-        "Check that CSS builds without warnings",
-        "Verify typography appears correctly in the browser"
+        "Unit test PHPMailer instantiation",
+        "Verify SMTP connection logic"
       ]
     },
     {
-      "release_id": "R3",
-      "feature": "Constants & Assets Management",
-      "description": "Centralized export of image assets and logos used throughout the UI.",
+      "release_id": "R003",
+      "feature": "GeoIP Data",
+      "description": "CSV datasets for mapping IP ranges to country codes.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "a/geo/country-ipv4.csv",
+        "a/geo/country-ipv6.csv"
+      ],
+      "validation_requirements": [
+        "Validate CSV format and headers",
+        "Check for duplicate IP ranges"
+      ]
+    },
+    {
+      "release_id": "R004",
+      "feature": "RRWeb Assets (CSS)",
+      "description": "Stylesheets for rrweb player and recorder UI.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "a/vendor/rrweb-player.min.css",
+        "a/vendor/rrweb.min.css"
+      ],
+      "validation_requirements": [
+        "Verify CSS files are valid and minified"
+      ]
+    },
+    {
+      "release_id": "R005",
+      "feature": "RRWeb Assets (JS)",
+      "description": "JavaScript bundles for rrweb recorder and player functionality.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "a/vendor/rrweb-player.min.js",
+        "a/vendor/rrweb.min.js"
+      ],
+      "validation_requirements": [
+        "Verify JS files are valid and minified",
+        "Check for syntax errors"
+      ]
+    },
+    {
+      "release_id": "R006",
+      "feature": "Analytics Collector (PHP)",
+      "description": "PHP drop-in collector for analytics events, storing data in SQLite.",
       "complexity": "S",
       "dependencies": [],
       "files_involved": [
-        "src/constants/index.jsx"
+        "a/collect.php"
       ],
       "validation_requirements": [
-        "Import constants in a test component to ensure paths resolve"
+        "Test event ingestion into SQLite",
+        "Verify error handling for invalid payloads"
       ]
     },
     {
-      "release_id": "R4",
-      "feature": "Core App Shell & Entry",
-      "description": "Main entry point, root React component and HTML scaffold that bootstraps the SPA.",
+      "release_id": "R007",
+      "feature": "Analytics Collector (Python)",
+      "description": "Python service that serves tracker scripts, rrweb bundles, and receives analytics events.",
       "complexity": "M",
-      "dependencies": [
-        "Project Setup & Configuration",
-        "Global Styles & Typography"
-      ],
+      "dependencies": [],
       "files_involved": [
-        "index.html",
-        "src/main.jsx",
-        "src/App.jsx"
+        "a/collector.py"
       ],
       "validation_requirements": [
-        "Run dev server and confirm the app renders without errors"
+        "Test HTTP server startup",
+        "Verify static file serving for rrweb assets"
       ]
     },
     {
-      "release_id": "R5",
-      "feature": "Navigation & Header",
-      "description": "Top navigation bar component providing site navigation and branding.",
+      "release_id": "R008",
+      "feature": "GeoIP Resolver",
+      "description": "Python module that resolves client IPs to country codes using local CSV datasets.",
       "complexity": "S",
       "dependencies": [
-        "Core App Shell & Entry"
+        "R003"
       ],
       "files_involved": [
-        "src/components/Navbar/Navbar.jsx"
+        "a/geo.py"
       ],
       "validation_requirements": [
-        "Render Navbar in the app and verify links are present"
+        "Test IP resolution for known IPv4 and IPv6 addresses",
+        "Verify fallback behavior for unknown IPs"
       ]
     },
     {
-      "release_id": "R6",
-      "feature": "Footer Section",
-      "description": "Site footer containing links, social icons and copyright information.",
+      "release_id": "R009",
+      "feature": "Analytics Tracker (JS)",
+      "description": "Client-side tracker script that sends events to the collector and uses rrweb for session recording.",
       "complexity": "S",
       "dependencies": [
-        "Core App Shell & Entry"
+        "R004",
+        "R005"
       ],
       "files_involved": [
-        "src/components/FooterSection/Footer.jsx"
+        "a/tracker.js"
       ],
       "validation_requirements": [
-        "Render Footer and check that all sections display correctly"
+        "Test event dispatching in browser",
+        "Verify rrweb integration for session recording"
       ]
     },
     {
-      "release_id": "R7",
-      "feature": "Hero Section",
-      "description": "Prominent hero component with headline, call\u2011to\u2011action and animated visuals.",
+      "release_id": "R010",
+      "feature": "Analytics Dashboard",
+      "description": "HTML dashboard for visualizing analytics data, styled with rrweb-player assets.",
+      "complexity": "S",
+      "dependencies": [
+        "R006",
+        "R007"
+      ],
+      "files_involved": [
+        "a/dashboard.html"
+      ],
+      "validation_requirements": [
+        "Verify dashboard loads data from collectors",
+        "Check visual rendering of analytics charts"
+      ]
+    },
+    {
+      "release_id": "R011",
+      "feature": "App Configuration",
+      "description": "Holds application configuration data.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "api/app_config.json"
+      ],
+      "validation_requirements": [
+        "Validate JSON structure",
+        "Check for required configuration keys"
+      ]
+    },
+    {
+      "release_id": "R012",
+      "feature": "Authentication & OAuth",
+      "description": "Handles user authentication via Google, generic verification, and Twitter OAuth.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/auth_google.php",
+        "api/auth_verify.php",
+        "api/auth_x.php"
+      ],
+      "validation_requirements": [
+        "Test Google OAuth flow",
+        "Verify Twitter OAuth token exchange"
+      ]
+    },
+    {
+      "release_id": "R013",
+      "feature": "Bandit & Analytics",
+      "description": "Aggregates visitor metrics, tracks download clicks, and provides analytics endpoints.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/bandit.php",
+        "api/dl_track.php"
+      ],
+      "validation_requirements": [
+        "Test metric aggregation logic",
+        "Verify download click tracking"
+      ]
+    },
+    {
+      "release_id": "R014",
+      "feature": "Billing & Promo",
+      "description": "Manages purchase leads, billing requests, and promo code redemption for accounts.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/billing_request.php",
+        "api/promo_redeem.php"
+      ],
+      "validation_requirements": [
+        "Test billing request processing",
+        "Verify promo code validation and redemption"
+      ]
+    },
+    {
+      "release_id": "R015",
+      "feature": "Desktop Download & Email (Part 1)",
+      "description": "Provides download links for desktop installers and email link requests.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/desktop_download.php",
+        "api/desktop_email_link.php"
+      ],
+      "validation_requirements": [
+        "Test download link generation",
+        "Verify email link request handling"
+      ]
+    },
+    {
+      "release_id": "R016",
+      "feature": "Desktop Download & Email (Part 2)",
+      "description": "Handles key validation, status checks, and update retrieval for desktop apps.",
       "complexity": "M",
       "dependencies": [
-        "Core App Shell & Entry",
-        "Constants & Assets Management"
+        "R015"
       ],
       "files_involved": [
-        "src/components/HeroSection/Hero.jsx"
+        "api/desktop_status.php",
+        "api/download_update.php",
+        "api/validate_key.php"
       ],
       "validation_requirements": [
-        "Display Hero on the homepage and verify image assets load"
+        "Test key validation logic",
+        "Verify update retrieval mechanism"
       ]
     },
     {
-      "release_id": "R8",
-      "feature": "Pages & Content",
-      "description": "Individual page components that render the main content sections such as How It Works, Key Features, Pricing, and Testimonials.",
+      "release_id": "R017",
+      "feature": "Generation & Venice AI (Part 1)",
+      "description": "Handles image/video generation requests via Venice AI.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/generate_request.php",
+        "api/venice_client.php"
+      ],
+      "validation_requirements": [
+        "Test generation request submission",
+        "Verify Venice AI client integration"
+      ]
+    },
+    {
+      "release_id": "R018",
+      "feature": "Generation & Venice AI (Part 2)",
+      "description": "Tracks status of generation requests.",
+      "complexity": "S",
+      "dependencies": [
+        "R017"
+      ],
+      "files_involved": [
+        "api/generation_status.php"
+      ],
+      "validation_requirements": [
+        "Test status polling endpoint",
+        "Verify status update logic"
+      ]
+    },
+    {
+      "release_id": "R019",
+      "feature": "Lost & Verify (User Account)",
+      "description": "Password reset and email verification flows for logged-in users.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/lk_resend_login.php",
+        "api/lk_verify_email.php"
+      ],
+      "validation_requirements": [
+        "Test password reset flow",
+        "Verify email verification logic"
+      ]
+    },
+    {
+      "release_id": "R020",
+      "feature": "Support & Chat",
+      "description": "Polls support chat history and handles Telegram webhook for support replies.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/support_poll.php",
+        "api/support_tg_8f191f6814a14d11099d9a7a.php"
+      ],
+      "validation_requirements": [
+        "Test chat history polling",
+        "Verify Telegram webhook handling"
+      ]
+    },
+    {
+      "release_id": "R021",
+      "feature": "Waitlist & Notifications",
+      "description": "Manages waitlist signups, sends notifications via Telegram, and handles anti-bot power-of-two checks.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "api/waitlist.php",
+        "api/nv_notify.php",
+        "api/nv_pow.php"
+      ],
+      "validation_requirements": [
+        "Test waitlist signup process",
+        "Verify Telegram notification sending"
+      ]
+    },
+    {
+      "release_id": "R022",
+      "feature": "Trial Activation",
+      "description": "Soft anti-bot gate for trial activation, email code verification.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "api/p3_trial.php"
+      ],
+      "validation_requirements": [
+        "Test trial activation flow",
+        "Verify email code verification"
+      ]
+    },
+    {
+      "release_id": "R023",
+      "feature": "OAuth Authentication",
+      "description": "Handles OAuth 2.0 authentication flows for Google and Twitter, including redirects, callbacks, and session management.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "auth/google/callback.php",
+        "auth/google/redirect.php",
+        "auth/twitter/callback.php",
+        "auth/twitter/config.php",
+        "auth/twitter/redirect.php"
+      ],
+      "validation_requirements": [
+        "Test Google OAuth redirect and callback",
+        "Verify Twitter OAuth flow"
+      ]
+    },
+    {
+      "release_id": "R024",
+      "feature": "Chat API",
+      "description": "Provides AI-powered chat support via xAI, with Telegram integration and rate limiting.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "chat/chat_api.php"
+      ],
+      "validation_requirements": [
+        "Test chat API endpoints",
+        "Verify rate limiting logic"
+      ]
+    },
+    {
+      "release_id": "R025",
+      "feature": "Resume Upload API",
+      "description": "Endpoint for uploading resumes, storing them, and returning public URLs.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "chat/upload_resume.php"
+      ],
+      "validation_requirements": [
+        "Test resume upload functionality",
+        "Verify public URL generation"
+      ]
+    },
+    {
+      "release_id": "R026",
+      "feature": "Batch Email Sending",
+      "description": "Sends bulk emails to campaign targets using environment variables and templates.",
+      "complexity": "L",
+      "dependencies": [],
+      "files_involved": [
+        "data/batch_send.php"
+      ],
+      "validation_requirements": [
+        "Test bulk email sending",
+        "Verify template rendering"
+      ]
+    },
+    {
+      "release_id": "R027",
+      "feature": "iOS Email Sending",
+      "description": "Sends iOS-specific email campaigns with custom templates.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "data/ios_send.php"
+      ],
+      "validation_requirements": [
+        "Test iOS email campaign sending",
+        "Verify custom template usage"
+      ]
+    },
+    {
+      "release_id": "R028",
+      "feature": "Campaign Email Sending",
+      "description": "Handles campaign email dispatch to registered users.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "data/send_campaign.php"
+      ],
+      "validation_requirements": [
+        "Test campaign email dispatch",
+        "Verify user list filtering"
+      ]
+    },
+    {
+      "release_id": "R029",
+      "feature": "Restored Service Notification",
+      "description": "Broadcasts service restoration notifications to all registered users.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "data/restored_send.php"
+      ],
+      "validation_requirements": [
+        "Test notification broadcasting",
+        "Verify user list retrieval"
+      ]
+    },
+    {
+      "release_id": "R030",
+      "feature": "Expiration Reminder",
+      "description": "Sends reminders to users whose bonus credits are about to expire.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "data/expire_reminder.php"
+      ],
+      "validation_requirements": [
+        "Test expiration reminder logic",
+        "Verify user credit checking"
+      ]
+    },
+    {
+      "release_id": "R031",
+      "feature": "Expiration Bonus",
+      "description": "Handles expiration of bonus credits and related notifications.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "data/expire_bonus.php"
+      ],
+      "validation_requirements": [
+        "Test bonus credit expiration",
+        "Verify notification sending"
+      ]
+    },
+    {
+      "release_id": "R032",
+      "feature": "Desktop Links Data",
+      "description": "JSON file containing desktop link mappings.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "data/desktop_links.json"
+      ],
+      "validation_requirements": [
+        "Validate JSON structure",
+        "Check for valid URLs"
+      ]
+    },
+    {
+      "release_id": "R033",
+      "feature": "Desktop Release Data",
+      "description": "JSON file containing desktop release information.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "data/desktop_release.json"
+      ],
+      "validation_requirements": [
+        "Validate JSON structure",
+        "Check for valid release metadata"
+      ]
+    },
+    {
+      "release_id": "R034",
+      "feature": "Pinterest CAPI Example",
+      "description": "Example configuration for Pinterest CAPI integration.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "data/pinterest_capi.php.example"
+      ],
+      "validation_requirements": [
+        "Verify example file syntax"
+      ]
+    },
+    {
+      "release_id": "R035",
+      "feature": "Reddit CAPI",
+      "description": "Configuration for Reddit CAPI integration.",
+      "complexity": "XS",
+      "dependencies": [],
+      "files_involved": [
+        "data/reddit_capi.php"
+      ],
+      "validation_requirements": [
+        "Verify configuration file syntax"
+      ]
+    },
+    {
+      "release_id": "R036",
+      "feature": "Auth Core",
+      "description": "Core authentication logic, session handling, and database interactions for user accounts.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "functions/auth_db.php",
+        "functions/auth_flow_state.php",
+        "functions/flow_oauth.php"
+      ],
+      "validation_requirements": [
+        "Test database interactions",
+        "Verify session handling logic"
+      ]
+    },
+    {
+      "release_id": "R037",
+      "feature": "Email Verification Codes",
+      "description": "Generation, storage, and validation of short-lived email verification codes.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/email_codes.php"
+      ],
+      "validation_requirements": [
+        "Test code generation and storage",
+        "Verify code validation logic"
+      ]
+    },
+    {
+      "release_id": "R038",
+      "feature": "Auth Password Flow",
+      "description": "Endpoints for changing and setting user passwords.",
+      "complexity": "S",
+      "dependencies": [
+        "R036"
+      ],
+      "files_involved": [
+        "functions/auth_change_password.php",
+        "functions/auth_set_password.php"
+      ],
+      "validation_requirements": [
+        "Test password change flow",
+        "Verify password setting logic"
+      ]
+    },
+    {
+      "release_id": "R039",
+      "feature": "Auth Registration Flow (Part 1)",
+      "description": "Multi-step user registration, including email code verification.",
       "complexity": "M",
       "dependencies": [
-        "Core App Shell & Entry",
-        "Constants & Assets Management",
-        "Navigation & Header"
+        "R036",
+        "R037"
       ],
       "files_involved": [
-        "src/pages/HowItWorks.jsx",
-        "src/pages/KeyFeatures.jsx",
-        "src/pages/PricingPlans.jsx",
-        "src/pages/Testimonials.jsx"
+        "functions/auth_register.php",
+        "functions/auth_send_code.php",
+        "functions/auth_verify_code.php"
       ],
       "validation_requirements": [
-        "Navigate to each page and confirm content renders without errors"
+        "Test registration flow",
+        "Verify email code verification"
       ]
     },
     {
-      "release_id": "R9",
-      "feature": "Static Assets",
-      "description": "All image and media files used by components and pages, stored in the assets folder and public directory.",
+      "release_id": "R040",
+      "feature": "Auth Registration Flow (Part 2)",
+      "description": "Google OAuth completion for user registration.",
+      "complexity": "S",
+      "dependencies": [
+        "R039"
+      ],
+      "files_involved": [
+        "functions/auth_google_finish.php"
+      ],
+      "validation_requirements": [
+        "Test Google OAuth completion",
+        "Verify user account creation"
+      ]
+    },
+    {
+      "release_id": "R041",
+      "feature": "Captcha & Security",
+      "description": "Human verification mechanisms: hCaptcha integration, invisible proof-of-work, and client IP resolution.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "functions/captcha.php",
+        "functions/nv_pow.php",
+        "functions/nv_client_ip.php"
+      ],
+      "validation_requirements": [
+        "Test hCaptcha integration",
+        "Verify proof-of-work logic"
+      ]
+    },
+    {
+      "release_id": "R042",
+      "feature": "Lead Capture & Alerts",
+      "description": "Endpoints for collecting leads, career applications, and sending Telegram alerts with contextual data.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "functions/lead.php",
+        "functions/careers_apply.php",
+        "functions/nv_alert_ctx.php",
+        "functions/phone_verify.php"
+      ],
+      "validation_requirements": [
+        "Test lead collection",
+        "Verify Telegram alert sending"
+      ]
+    },
+    {
+      "release_id": "R043",
+      "feature": "Desktop Release & Download",
+      "description": "Helpers for providing desktop app download links and tracking download counts.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/desktop_release.php",
+        "functions/get_download_link.php"
+      ],
+      "validation_requirements": [
+        "Test download link generation",
+        "Verify download count tracking"
+      ]
+    },
+    {
+      "release_id": "R044",
+      "feature": "External Conversion APIs",
+      "description": "Server-side conversion tracking for Pinterest and Reddit pixels.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/pinterest_capi.php",
+        "functions/reddit_capi.php"
+      ],
+      "validation_requirements": [
+        "Test Pinterest CAPI integration",
+        "Verify Reddit CAPI integration"
+      ]
+    },
+    {
+      "release_id": "R045",
+      "feature": "Demo & Hello Endpoints",
+      "description": "Simple demo and hello endpoints that return JSON responses and use PHPMailer.",
       "complexity": "XS",
       "dependencies": [
-        "Constants & Assets Management",
-        "Hero Section",
-        "Pages & Content"
+        "R002"
       ],
       "files_involved": [
-        "public/vite.svg",
-        "src/assets/audience.jpeg",
-        "src/assets/automation.jpeg",
-        "src/assets/broadcastly-logo.png",
-        "src/assets/chart.png",
-        "src/assets/cloudcast-logo.png",
-        "src/assets/hero.jpg",
-        "src/assets/livestreamer-logo.png",
-        "src/assets/logo.png",
-        "src/assets/monetize.jpeg",
-        "src/assets/optimize.jpeg",
-        "src/assets/react.svg",
-        "src/assets/streamer.jpeg",
-        "src/assets/streamlabs-logo.png",
-        "src/assets/user1.jpeg",
-        "src/assets/user2.jpeg",
-        "src/assets/user3.jpeg",
-        "src/assets/user4.jpeg",
-        "src/assets/user5.jpeg",
-        "src/assets/user6.jpeg"
+        "functions/demo.php",
+        "functions/hello.php"
       ],
       "validation_requirements": [
-        "Verify each image loads correctly in its respective component"
+        "Test demo endpoint response",
+        "Verify hello endpoint response"
+      ]
+    },
+    {
+      "release_id": "R046",
+      "feature": "Misc Utilities",
+      "description": "Utility scripts for Google Ads conversion tracking on static flow pages.",
+      "complexity": "XS",
+      "dependencies": [
+        "R036"
+      ],
+      "files_involved": [
+        "functions/flow_px.php"
+      ],
+      "validation_requirements": [
+        "Test Google Ads conversion tracking"
+      ]
+    },
+    {
+      "release_id": "R047",
+      "feature": "Review Moderation & API",
+      "description": "Handles review submission, listing, and admin moderation via JSON endpoints.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "functions/reviews.php"
+      ],
+      "validation_requirements": [
+        "Test review submission",
+        "Verify admin moderation logic"
+      ]
+    },
+    {
+      "release_id": "R048",
+      "feature": "SMS OTP Provider",
+      "description": "Generates and verifies OTP codes, sending via configured SMS provider APIs.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/sms_provider.php"
+      ],
+      "validation_requirements": [
+        "Test OTP generation",
+        "Verify SMS provider integration"
+      ]
+    },
+    {
+      "release_id": "R049",
+      "feature": "Support Chat & Telegram Integration",
+      "description": "Facilitates support chat between users and owner via Telegram bot, including translation pipelines.",
+      "complexity": "L",
+      "dependencies": [],
+      "files_involved": [
+        "functions/support_lib.php"
+      ],
+      "validation_requirements": [
+        "Test support chat functionality",
+        "Verify Telegram bot integration"
+      ]
+    },
+    {
+      "release_id": "R050",
+      "feature": "Twitter Ads Click ID Capture",
+      "description": "Captures first-touch Twitter Ads click IDs into cookies for later use.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/twclid_capture.php"
+      ],
+      "validation_requirements": [
+        "Test click ID capture",
+        "Verify cookie setting"
+      ]
+    },
+    {
+      "release_id": "R051",
+      "feature": "Waitlist Management & Notifications",
+      "description": "Manages waitlist sign-ups and triggers Telegram alerts for webinar registrations.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "functions/waitlist.php"
+      ],
+      "validation_requirements": [
+        "Test waitlist management",
+        "Verify Telegram alert triggering"
+      ]
+    },
+    {
+      "release_id": "R052",
+      "feature": "Welcome Email Service",
+      "description": "Sends transactional welcome emails using the Resend API.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/welcome_mail.php"
+      ],
+      "validation_requirements": [
+        "Test welcome email sending",
+        "Verify Resend API integration"
+      ]
+    },
+    {
+      "release_id": "R053",
+      "feature": "Twitter Ads Event Tracking",
+      "description": "Tracks conversion events and forwards them to Twitter Ads API, respecting test traffic flags.",
+      "complexity": "M",
+      "dependencies": [
+        "R050"
+      ],
+      "files_involved": [
+        "functions/x_ads_event.php"
+      ],
+      "validation_requirements": [
+        "Test event tracking",
+        "Verify Twitter Ads API forwarding"
+      ]
+    },
+    {
+      "release_id": "R054",
+      "feature": "Twitter Ads Conversion API",
+      "description": "Server-side purchase tracking for Twitter Ads via the Conversion API.",
+      "complexity": "L",
+      "dependencies": [
+        "R053"
+      ],
+      "files_involved": [
+        "functions/x_capi.php"
+      ],
+      "validation_requirements": [
+        "Test purchase tracking",
+        "Verify Conversion API integration"
+      ]
+    },
+    {
+      "release_id": "R055",
+      "feature": "Support Cron Jobs",
+      "description": "Scheduled tasks for support system maintenance and cleanup.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/support_cron.php"
+      ],
+      "validation_requirements": [
+        "Test cron job execution",
+        "Verify cleanup logic"
+      ]
+    },
+    {
+      "release_id": "R056",
+      "feature": "Authentication Flow",
+      "description": "Handles OAuth callbacks, token verification, session cookie management and logout logic for the application.",
+      "complexity": "M",
+      "dependencies": [],
+      "files_involved": [
+        "auth.php",
+        "auth_callback.php",
+        "auth-callback.php",
+        "logout.php"
+      ],
+      "validation_requirements": [
+        "Test OAuth callback handling",
+        "Verify session cookie management"
+      ]
+    },
+    {
+      "release_id": "R057",
+      "feature": "User Registration & Onboarding",
+      "description": "Pages for new-user sign-up, password setting after email verification and optional phone verification.",
+      "complexity": "M",
+      "dependencies": [
+        "R056"
+      ],
+      "files_involved": [
+        "register.php",
+        "set-password.php",
+        "verify-phone.php"
+      ],
+      "validation_requirements": [
+        "Test registration page",
+        "Verify password setting flow"
+      ]
+    },
+    {
+      "release_id": "R058",
+      "feature": "Prompt Assistant Integration",
+      "description": "Loads and configures the Neuravision Prompt Assistant package used by the site.",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "lk/pa.php"
+      ],
+      "validation_requirements": [
+        "Test prompt assistant loading",
+        "Verify configuration"
+      ]
+    },
+    {
+      "release_id": "R059",
+      "feature": "LK Core Shared Logic",
+      "description": "Shared backend for the landing-kit (LK) split-test: authentication wrapper, download block markup, and install-step assets.",
+      "complexity": "L",
+      "dependencies": [
+        "R056"
+      ],
+      "files_involved": [
+        "lk/lk_core.php",
+        "lk/lk_dlblock.php",
+        "lk/lk_install_steps.php"
+      ],
+      "validation_requirements": [
+        "Test authentication wrapper",
+        "Verify download block markup"
+      ]
+    },
+    {
+      "release_id": "R060",
+      "feature": "LK Variant A Page",
+      "description": "Cabinet variant A (download-first screen) that renders the UI for split-test group A.",
+      "complexity": "S",
+      "dependencies": [
+        "R059"
+      ],
+      "files_involved": [
+        "lk/a.php"
+      ],
+      "validation_requirements": [
+        "Test variant A rendering",
+        "Verify UI elements"
+      ]
+    },
+    {
+      "release_id": "R061",
+      "feature": "LK Variant B Page",
+      "description": "Cabinet variant B (studio screen) for split-test group B, using the same core logic.",
+      "complexity": "S",
+      "dependencies": [
+        "R059"
+      ],
+      "files_involved": [
+        "lk/b.php"
+      ],
+      "validation_requirements": [
+        "Test variant B rendering",
+        "Verify UI elements"
+      ]
+    },
+    {
+      "release_id": "R062",
+      "feature": "LK Variant C Page",
+      "description": "Cabinet variant C (one-tap download screen) for split-test group C, minimal UI flow.",
+      "complexity": "S",
+      "dependencies": [
+        "R059"
+      ],
+      "files_involved": [
+        "lk/c.php"
+      ],
+      "validation_requirements": [
+        "Test variant C rendering",
+        "Verify UI elements"
+      ]
+    },
+    {
+      "release_id": "R063",
+      "feature": "LK Download Endpoint Page",
+      "description": "Handles the direct download request routing for the landing-kit, delegating to API endpoints.",
+      "complexity": "S",
+      "dependencies": [
+        "R059"
+      ],
+      "files_involved": [
+        "lk/dl.php"
+      ],
+      "validation_requirements": [
+        "Test download request routing",
+        "Verify API delegation"
+      ]
+    },
+    {
+      "release_id": "R064",
+      "feature": "LK Index & Navigation Page",
+      "description": "Entry point for the landing-kit, routing users to the appropriate variant based on cookies or AB test logic.",
+      "complexity": "S",
+      "dependencies": [
+        "R059"
+      ],
+      "files_involved": [
+        "lk/index.php"
+      ],
+      "validation_requirements": [
+        "Test index page routing",
+        "Verify AB test logic"
+      ]
+    },
+    {
+      "release_id": 65,
+      "feature": "Functions Files",
+      "description": "Remaining functions files not covered by primary releases",
+      "complexity": "S",
+      "dependencies": [],
+      "files_involved": [
+        "functions/promo_check.php"
+      ],
+      "validation_requirements": [
+        "Verify functions files are present"
       ]
     }
   ]
