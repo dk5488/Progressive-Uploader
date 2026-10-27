@@ -8,6 +8,7 @@ def test_ignore_env_files():
     assert scanner.is_file_allowed(Path(".env.local")) == False
     assert scanner.is_file_allowed(Path(".env.production")) == False
     assert scanner.is_file_allowed(Path("src/.env")) == False
+    assert scanner.is_file_allowed(Path(".env.example")) == True
 
 def test_ignore_secrets_files():
     scanner = SecretScanner()

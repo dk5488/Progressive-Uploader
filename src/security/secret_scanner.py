@@ -18,9 +18,10 @@ class SecretScanner:
     IGNORE_EXTENSIONS = {".pem", ".key", ".p12", ".pfx"}
 
     def is_file_allowed(self, path: Path) -> bool:
-        """Check if file should be analyzed or ignored completely."""
         if path.name in self.IGNORE_FILES:
             return False
+        if path.name.endswith((".example", ".sample", ".template")):
+            return True
         if any(path.name.startswith(f) for f in {".env."}):
             return False
         if path.suffix in self.IGNORE_EXTENSIONS:

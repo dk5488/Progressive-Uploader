@@ -7,6 +7,7 @@
       "complexity": "XS",
       "dependencies": [],
       "files_involved": [
+        ".env.example",
         ".gitattributes",
         ".gitignore",
         ".htaccess",

@@ -14,13 +14,13 @@ jobs:
       contents: write
 
     steps:
-      # 1. Checkout Target Repository (StreamPulse)
-      - name: Checkout Target Repository (StreamPulse)
+      # 1. Checkout Target Repository (SynapseForge)
+      - name: Checkout Target Repository (SynapseForge)
         id: checkout_target
         continue-on-error: true
         uses: actions/checkout@v4
         with:
-          repository: dk5488/StreamPulse
+          repository: dk5488/SynapseForge
           token: ${{ secrets.GH_PAT_TOKEN }}
           fetch-depth: 0
           path: target_repo
@@ -37,7 +37,7 @@ jobs:
             git checkout -B main 2>/dev/null || git checkout --orphan main 2>/dev/null || true
           fi
           git remote remove origin 2>/dev/null || true
-          git remote add origin https://x-access-token:${{ secrets.GH_PAT_TOKEN }}@github.com/dk5488/StreamPulse.git
+          git remote add origin https://x-access-token:${{ secrets.GH_PAT_TOKEN }}@github.com/dk5488/SynapseForge.git
 
       # 2. Checkout Private Uploader Engine
       - name: Checkout Progressive Uploader Engine
@@ -64,6 +64,7 @@ jobs:
           cd target_repo
           git config user.name "${{ secrets.YOUR_GITHUB_NAME }}"
           git config user.email "${{ secrets.YOUR_GITHUB_EMAIL }}"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT_TOKEN }}@github.com/dk5488/SynapseForge.git
 
       # 6. Restore Publisher State & Overlay Source Code
       - name: Restore Publisher State & Overlay Source Code
