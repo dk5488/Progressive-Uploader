@@ -4,6 +4,11 @@
       "release_id": "R001",
       "status": "PUBLISHED",
       "timestamp": "2026-10-27T11:17:16.878961"
+    },
+    {
+      "release_id": "R002",
+      "status": "PUBLISHED",
+      "timestamp": "2026-10-28T08:45:31.413591"
     }
   ]
 }
